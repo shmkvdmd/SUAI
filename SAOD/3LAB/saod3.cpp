@@ -76,11 +76,67 @@ void stkPrint(struct stack* stk) //вывод стека
 	} while (i > 0);
 }
 
+struct queue
+{
+	int qu[size_Task];
+	int rear, frnt;
+};
+
+void queue_init(struct queue *q)
+{
+	q->frnt = 1;
+	q->rear = 0;
+}
+
+void queue_add(struct queue *q, int x)
+{
+	if (q->rear < size_Task)
+	{
+		q->rear++;
+		q->qu[q->rear] = x;
+	}
+	else
+		cout << "Очередь полная\n";
+}
+
+int isempty_q(struct queue* q)
+{
+	if (q->rear < q->frnt) return 1;
+	else return 0;
+}
+
+void print_q(struct queue* q)
+{
+	int h;
+	if (isempty_q(q) == 1)
+	{
+		cout << "Очередь пуста\n";
+	}
+	for (h = q->frnt; h <= q->rear; h++)
+	{
+		printf("%d ", q->qu[h]);
+	}
+	return;
+}
+
+int remove_q(struct queue* q)
+{
+	int x;
+	if (isempty_q(q) == 1)
+	{
+		cout << "Очередь пуста\n";
+		return(0);
+	}
+	x = q->qu[q->frnt];
+	q->frnt++;
+	return x;
+}
 int main()
 {
 	setlocale(LC_ALL, "RU");
 	struct stack* stk;
-	int i, n;
+	struct queue* q;
+	int i, n, a, n_q;
 	float elem;
 	stk = (struct stack*)malloc(sizeof(struct stack));
 	init(stk);
@@ -100,6 +156,18 @@ int main()
 		cout << "Извлекаем элемент " << pop(stk);
 		cout << " в стеке осталось элементов " << getcount(stk) << endl;
 	} while (isempty(stk) == 0);
+	q = (queue*)malloc(sizeof(queue));
+	queue_init(q);
+	cout << "Введите количество элементов в очереди: ";
+	cin >> n_q;
+	for (i = 0; i < n_q; i++)
+	{
+		cout << "Введите элемент: " << i << " ";
+		cin >> a;
+		queue_add(q, a);
+	}
+	cout << "\n";
+	print_q(q);
 	return 0;
 
 }
