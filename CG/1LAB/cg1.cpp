@@ -62,19 +62,12 @@ void drawFloor()
 }
 void drawDiamond()
 {
-    float diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
-    float specular[] = { 0.0, 0.0, 0.0, 1.0 };
-    float ambient[] = { 0.2, 0.2, 0.2, 1.0 };
     //передняя сторона
     glBegin(GL_POLYGON);
     glColor3ub(21, 186, 188);
     glVertex3f(0.0, -0.7, 0.0);
     glVertex3f(0.5, 0.0, -0.5);
     glVertex3f(-0.5, 0.0, -0.5);
-    glMaterialf(GL_FRONT, GL_SHININESS, 128.0);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
     glEnd();
 
     glBegin(GL_POLYGON);
@@ -166,16 +159,15 @@ void display()
     glRotatef(rotate_y, 0.0, 1.0, 0.0);
     drawFloor();
     drawDiamond();
-    glFlush();  
+    glFlush();
 
 }
 int main(int argc, char* argv[])
 {
-    setlocale(LC_ALL, "ru");
     glutInit(&argc, argv);
     glutInitWindowPosition(550, 150);
     glutInitWindowSize(800, 800);
-    glutCreateWindow("три дэ");
+    glutCreateWindow("3d");
     glEnable(GL_DEPTH_TEST);
     glutDisplayFunc(display);
     glutSpecialFunc(specialKeys);
