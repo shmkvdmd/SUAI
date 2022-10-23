@@ -9,16 +9,18 @@ private:
 	int day;
 	int month;
 	int year;
+	int maxday();
 public:
 	Date();
 	~Date();
 	void setDate(int, int, int);
 	void showDate();
 	void showDate_s();
-	void operator +(int);
+	Date operator+(int);
+	Date operator-(int);
+	bool operator==(Date&);
 	bool valid();
 };
-
 Date::Date()
 {
 	day = 0;
@@ -30,10 +32,59 @@ Date::~Date()
 {
 	cout << "\nДестр\n";
 }
-void Date::operator +(int bonus)
+int Date::maxday()
 {
-
+	int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	return days[month - 1];
 }
+
+Date Date::operator+(int d)
+{
+	if (day + d > maxday()) {
+		d -= maxday() - day;
+		if (++month > 12) {
+			month = 1;
+			year++;
+		}
+		while (d / maxday()) {
+			if (++month > 12) {
+				month = 1;
+				year++;
+			}
+			d -= maxday();
+		}
+		day = d;
+	}
+	else day += d;
+	return *this;
+}
+
+Date Date::operator-(int d)
+{
+	if (day - d < 1) {
+		d -= day;
+		if (--month == 0) {
+			month = 12;
+			year--;
+		}
+		while (d / maxday()) {
+			d -= maxday();
+			if (--month == 0) {
+				month = 12;
+				year--;
+			}
+		}
+		day = maxday() - d;
+	}
+	else day -= d;
+	return *this;
+}
+
+bool Date::operator==(Date& dt)
+{
+	return day == dt.day && month == dt.month && year == dt.year;
+}
+
 bool Date::valid()
 {
 	if (year < 0) return false;
@@ -54,52 +105,66 @@ bool Date::valid()
 
 void Date::setDate(int d, int m, int y)
 {
-	if (m > 1 && m <12)
-	{
-		month = m;
-	}
-	else
-	{
-		cout << "Неверный ввод месяца\n";
-		month = 1;
-	}
-	if (d > 1 && d <31)
-	{
-		day = d;
-	}
-	else
-	{
-		cout << "Неверный ввод дня\n";
-		day = 1;
-	}
-	if (y > 0 && y < 2030)
-	{
-		year = y;
-	}
-	else
-	{
-		cout << "Неверный ввод года\n";
-		year = 2020;
-	}
+	day = d;
+	month = m;
+	year = y;
 }
 
 void Date::showDate()
 {
-	cout << day << "." << month << "." << year << endl;
+	if (valid() == 1)
+	{
+		cout << "\n" << day << "." << month << "." << year << endl;
+	}
+	else cout << "Неверный ввод\n";
 }
 
 void Date::showDate_s()
 {
-	cout << day << " " << months[month - 1] << " " << year << endl;
+	if (valid() == 1)
+	{
+		cout << day << " " << months[month - 1] << " " << year << endl;
+	}
+	else cout << "Неверный ввод\n";
 }
 int main()
 {
-	int d, m, y;
+	int d, m, y, increase, decrease;
 	setlocale(LC_ALL, "RU");
-	Date d1;
+	Date d1, d2;
 	cout << "Введите дату: ";
 	cin >> d >> m >> y;
 	d1.setDate(d, m, y);
 	d1.showDate();
 	d1.showDate_s();
+	cout << "Сколько дней прибавить: ";
+	cin >> increase;
+	d1 + increase;
+	d1.showDate();
+	d1.showDate_s();
+	cout << "Сколько дней убавить: ";
+	cin >> decrease;
+	d1 - decrease;
+	d1.showDate();
+	d1.showDate_s();
+	cout << "Введите дату: ";
+	cin >> d >> m >> y;
+	d2.setDate(d, m, y);
+	d2.showDate();
+	d2.showDate_s();
+	cout << "Сколько дней прибавить: ";
+	cin >> increase;
+	d2 + increase;
+	d2.showDate();
+	d2.showDate_s();
+	cout << "Сколько дней убавить: ";
+	cin >> decrease;
+	d2 - decrease;
+	d2.showDate();
+	d2.showDate_s();
+	if (d1 == d2)
+	{
+		cout << "Даты равны\n";
+	}
+	else cout << "Даты не равны\n";
 }
