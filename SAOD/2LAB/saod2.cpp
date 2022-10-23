@@ -1,54 +1,54 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
-struct list {
+struct list
+{
     int field; // поле данных
-    struct list* next; // указатель на следующий элемент
-    struct list* prev; // указатель на предыдущий элемент
+    struct list* ptr; // указатель на следующий элемент
 };
-struct list* init(int a) { // а- значение первого узла
+
+struct list* init(int a) // а- значение первого узла
+{
     struct list* lst;
     // выделение памяти под корень списка
     lst = (struct list*)malloc(sizeof(struct list));
     lst->field = a;
-    lst->next = NULL; // указатель на следующий узел
-    lst->prev = NULL; // указатель на предыдущий узел
+    lst->ptr = lst; // указатель на сам корневой узел
     return(lst);
 }
-struct list* addelem(list* lst, int number) {
+struct list* addelem(list* lst, int number)
+{
     struct list* temp, * p;
     temp = (struct list*)malloc(sizeof(list));
-    p = lst->next; // сохранение указателя на следующий узел
-    lst->next = temp; // предыдущий узел указывает на создаваемый
+    p = lst->ptr; // сохранение указателя на следующий элемент
+    lst->ptr = temp; // предыдущий узел указывает на создаваемый
     temp->field = number; // сохранение поля данных добавляемого узла
-    temp->next = p; // созданный узел указывает на следующий узел
-    temp->prev = lst; // созданный узел указывает на предыдущий узел
-    if (p != NULL)
-        p->prev = temp;
+    temp->ptr = p; // созданный узел указывает на следующий элемент
     return(temp);
 }
 
-void deletelem(list* lst)
+struct list* deletelem(list* lst)
+{
+    struct list* temp;
+    temp = lst;
+    while (temp->ptr != lst) // просматриваем список начиная с корня
+    { // пока не найдем узел, предшествующий lst
+        temp = temp->ptr;
+    }
+    temp->ptr = lst->ptr; // переставляем указатель
+    free(lst); // освобождаем память удаляемого узла
+    return(temp);
+}
+
+
+void listprint(list* lst)
 {
     struct list* p;
     p = lst;
-    int count = 0;
-    list* temp = lst;
-    while (temp) {
-        count++;
-        temp = temp->next;
-    }
-    cout << count;
-}
-
-void listprint(list* lst) {
-    struct list* p;
-    p = lst;
-    while (p->next != NULL) {
-        p = p->next; // переход к концу списка
-        // условие окончания обхода{
-        printf("%d ", p->field); // вывод значения элемента p
-    }
+    do {
+        printf("%d ", p->field); // вывод значения узла p
+        p = p->ptr; // переход к следующему узлу
+    } while (p != lst); // условие окончания обхода
 }
 
 void listprintr(list* lst)
@@ -59,16 +59,16 @@ void listprintr(list* lst)
     list* temp = lst;
     while (temp) {
         count++;
-        temp = temp->next;
+        temp = temp->ptr;
     }
-    while (p->next != NULL)
+    while (p != lst)
     {
-        p = p->next; // переход к концу списка
+        p = p->ptr; // переход к концу списка
     }
     for (int i = 0; i != count - 1; i++)
     {
         cout << p->field << " ";
-        p = p->prev;
+        p = p->ptr;
     }
 }
 
@@ -85,7 +85,6 @@ int main() {
         arr[i] = i + 1;
         cur = addelem(cur, arr[i]);
     }
-    listprint(head);
     bool tr = true;
     while (tr)
     {
