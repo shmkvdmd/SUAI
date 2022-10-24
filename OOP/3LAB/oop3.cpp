@@ -18,6 +18,7 @@ public:
 	void showDate_s();
 	Date operator+(int);
 	Date operator-(int);
+	friend Date operator+(int, Date&);
 	bool operator==(Date&);
 	bool valid();
 };
@@ -36,6 +37,27 @@ int Date::maxday()
 {
 	int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 	return days[month - 1];
+}
+
+Date operator+(int d, Date& d1)
+{
+	if (d1.day + d > d1.maxday()) {
+		d -= d1.maxday() - d1.day;
+		if (++d1.month > 12) {
+			d1.month = 1;
+			d1.year++;
+		}
+		while (d / d1.maxday()) {
+			if (++d1.month > 12) {
+				d1.month = 1;
+				d1.year++;
+			}
+			d -= d1.maxday();
+		}
+		d1.day = d;
+	}
+	else d1.day += d;
+	return d1;
 }
 
 Date Date::operator+(int d)
@@ -129,6 +151,7 @@ void Date::showDate_s()
 }
 int main()
 {
+	system("Color F0");
 	int d, m, y, increase, decrease;
 	setlocale(LC_ALL, "RU");
 	Date d1, d2;
@@ -139,7 +162,7 @@ int main()
 	d1.showDate_s();
 	cout << "Сколько дней прибавить: ";
 	cin >> increase;
-	d1 + increase;
+	d1 = increase+d1;
 	d1.showDate();
 	d1.showDate_s();
 	cout << "Сколько дней убавить: ";
@@ -154,12 +177,12 @@ int main()
 	d2.showDate_s();
 	cout << "Сколько дней прибавить: ";
 	cin >> increase;
-	d2 + increase;
+	d2 = d2 + increase;
 	d2.showDate();
 	d2.showDate_s();
 	cout << "Сколько дней убавить: ";
 	cin >> decrease;
-	d2 - decrease;
+	d2 = d2 - decrease;
 	d2.showDate();
 	d2.showDate_s();
 	if (d1 == d2)
