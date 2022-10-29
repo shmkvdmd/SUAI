@@ -218,7 +218,6 @@ int main()
 			<< "\n1 - добавить элемент"
 			<< "\n2 - вывод на экран"
 			<< "\n3 - удалить элемент"
-			<< "\n4-тест"
 			<< "\n0 - выход"
 			<< "\nВаш выбор: ";
 		cin >> menu;
@@ -247,7 +246,7 @@ int main()
 				cout << "\n";
 				for (int i = 0; i < li.howmany_links(); i++)
 				{
-					cout << arr[i] - arr2[i] << endl;
+					cout << arr[i] - arr2[i] << " ";
 				}
 			}
 			else
@@ -271,11 +270,6 @@ int main()
 				cout << "\nСписок пуст" << endl;
 			break;
 		}
-		case '4':
-		{
-
-
-		}
 		case '0':
 		{
 			for (int i = 0; i < mass_size; i++)
@@ -288,4 +282,4 @@ int main()
 	}
 
 	return 0;
-}
+}s
