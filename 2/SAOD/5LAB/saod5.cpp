@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
 
+uint16_t numcomp = 0;
+uint16_t numreshuffle = 0;
+
 int getRandomNumber(int min, int max)
 {
 	return min + (rand() % (max - min + 1));
@@ -76,6 +79,7 @@ void quickSort(int* arr, int low, int high)
 
 	while (i <= j)
 	{
+		numcomp++;
 		while (arr[i] < pivot)
 			i++;
 		while (arr[j] > pivot)
@@ -87,6 +91,7 @@ void quickSort(int* arr, int low, int high)
 			arr[j] = temp;
 			i++;
 			j--;
+			numreshuffle++;
 		}
 	}
 	if (j > low)
@@ -212,6 +217,8 @@ int main()
 		case 6:
 		{
 			quickSort(arr, 0, size - 1);
+			cout << "Кол-во операций сравнения: " << numcomp << "\n";
+			cout << "Кол-во операций перестановки: " << numreshuffle << "\n";
 			break;
 		}
 		case 7:
