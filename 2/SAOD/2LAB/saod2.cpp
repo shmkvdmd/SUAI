@@ -7,7 +7,6 @@
 #include <Windows.h>
 #include<conio.h>
 using namespace std;
-const int MWORD = 10;
 struct Link
 {
 	int word;  //слово
