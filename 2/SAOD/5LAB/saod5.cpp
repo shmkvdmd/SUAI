@@ -36,7 +36,7 @@ void Fill(int* arr, int size)
 
 void Find(int size, int* arr)
 {
-	cout << "Как вы хотите искать?(1-по номеру элемента/2-по значению)" << endl;
+	cout << "Поиск 1-по номеру элемента/2-по значению" << endl;
 	int ch = inputNum();
 
 	if ((ch != 1) && (ch != 2))
@@ -80,6 +80,7 @@ void quickSort(int* arr, int low, int high)
 	while (i <= j)
 	{
 		numcomp++;
+		/*cout << "!!!!!sort +1!!!!" << endl;*/
 		while (arr[i] < pivot)
 			i++;
 		while (arr[j] > pivot)
@@ -92,6 +93,7 @@ void quickSort(int* arr, int low, int high)
 			i++;
 			j--;
 			numreshuffle++;
+			/*cout << "!!!!!RESHUFFLE +1!!!!" << endl;*/
 		}
 	}
 	if (j > low)
@@ -120,7 +122,6 @@ void del(int*& arr, int& size)
 
 void count(int*& arr, int& size)
 {
-	quickSort(arr, 0, size - 1);
 	int count = 0;
 	cout << endl;
 	cout << "Количество повторяющихся элементов:" << endl;
