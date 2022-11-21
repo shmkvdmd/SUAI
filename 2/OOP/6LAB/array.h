@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <cmath>
 using namespace std;
@@ -26,7 +25,7 @@ public:
 	void showArr();
 	int getmax();
 	int getsum();
-	void reshapearr(int,int);
+	void reshapearr(int, int);
 };
 
 Array::Array(int length)
@@ -80,11 +79,23 @@ int Array::getsum()
 	return sum;
 }
 
-void Array::reshapearr(int a,int b)
+void Array::reshapearr(int a, int b)
 {
 	int* tmp = new int[100];
 	int j = 0;
 	int k = 0;
+	cout << "Удалить все элементы, модуль которых находится в интервале от " << a << " до " << b << endl;
+	try
+	{
+		if ((a == 0) && (b == 0))
+		{
+			throw range_error("Неверный интервал");
+		}
+	}
+	catch (std::range_error)
+	{
+		cout << "Неверные границы. Преобразование не выполнено.\n";
+	}
 	for (int i = 0; i < m_length; i++)
 	{
 		if (!(a <= abs(m_arr[i]) && abs(m_arr[i]) <= b))

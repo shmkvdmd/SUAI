@@ -112,7 +112,7 @@ int main()
 			cout << "Исходный массив: " << endl;
 			arr.showArr();
 			cout << "\nПолученный массив: \n";
-			arr.reshapearr(2, 5);
+			arr.reshapearr(1, 5);
 		}
 	}
 

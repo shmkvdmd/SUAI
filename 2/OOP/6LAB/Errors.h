@@ -1,5 +1,5 @@
-#pragma once
 #include <exception>
+#include <iostream>
 using namespace std;
 
 class Errors : public std::exception
