@@ -21,12 +21,9 @@ int GetRandomNumber(int min, int max)
 
 }
 
-void main()
+int main()
 {
-
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-
+	setlocale(LC_ALL, "ru");
 	srand(time(NULL));
 
 	int choice = -1;
@@ -34,9 +31,9 @@ void main()
 	int len{};
 	std::vector<int> buff{};
 
-	std::cout << "Введите длину вектора: ";
-	std::cin >> len;
-	std::cout << std::endl;
+	cout << "Введите длину вектора: ";
+	cin >> len;
+	cout << endl;
 
 	for (int i = 0; i < len; i++)
 	{
@@ -46,50 +43,52 @@ void main()
 	}
 
 	Data data{ buff };
-
+	data.showData();
 	while (choice != 0)
 	{
-		std::cout << std::endl;
-		data.showData();
-		std::cout << std::endl;
-		std::cout << std::endl;
+		cout << endl;
+		cout << endl;
+		cout << endl;
 
-		std::cout << "Выберите действие: " << std::endl;
-		std::cout << "1 - Получить сумму всех элементов вектора" << std::endl;
-		std::cout << "2 - Для каждого элемента вычислить 2x + 5" << std::endl;
-		std::cout << "3 - Заменить элементы, которые больше или равны 20 на значение 10" << std::endl;
-		std::cout << "0 - Закончить работу" << std::endl;
+		cout << "Выберите действие: " << endl;
+		cout << "1 - Удалить элементы равные 0" << endl;
+		cout << "2 - Умножить все элементы на 2" << endl;
+		cout << "3 - Заменить элементы, которые больше или равны 10 на значение 0" << endl;
+		cout << "0 - Закончить работу" << endl;
 
-		std::cout << "Введите номер действия: ";
-		std::cin >> choice;
+		cout << "Введите номер действия: ";
+		cin >> choice;
 
 		if (choice == 1)
 		{
 
-			std::cout << "Сумма всех элементов вектора равна " << data.getSum() << std::endl;
+			cout << "Удалить элементы равные 0 " << endl;
+			data.zerodelete();
+			data.showData();
 
 		}
 
 		if (choice == 2)
 		{
 
-			std::cout << "Исходный массив: " << std::endl;
+			cout << "Исходный массив: " << endl;
 			data.showData();
-			std::cout << std::endl;
-			std::cout << "Преобразованный массив: " << std::endl;
+			cout << endl;
+			cout << "Преобразованный массив: " << endl;
 			data.calc();
-			std::cout << std::endl;
+			data.showData();
+			cout << endl;
 
 		}
 
 		if (choice == 3)
 		{
 
-			std::cout << "Исходный массив: " << std::endl;
+			cout << "Исходный массив: " << endl;
 			data.showData();
-			std::cout << std::endl;
+			cout << endl;
 			data.change();
-			std::cout << std::endl;
+			cout << endl;
 
 		}
 

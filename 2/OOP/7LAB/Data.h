@@ -18,26 +18,10 @@ public:
 	~Data();
 
 	void showData();
-	int getSum();
+	void zerodelete();
 	void calc();
 	void change();
-	bool predict(int elem) { return elem >= 20; };
-
-};
-
-class Sum
-{
-
-public:
-
-	int sum{ 0 };
-
-	void operator() (int term)
-	{
-
-		sum += term;
-
-	}
+	bool predict(int elem) { return abs(elem) >= 10; };
 
 };
 
@@ -56,21 +40,17 @@ void Data::showData()
 
 }
 
-int Data::getSum()
+void Data::zerodelete()
 {
-
-	Sum sum = std::for_each(m_data.cbegin(), m_data.cend(), Sum());
-
-	return sum.sum;
+	vector <int>::iterator newData = std::remove(m_data.begin(), m_data.end(), 0);
+	m_data.erase(newData, m_data.end());
 
 }
 
 void Data::calc()
 {
 
-	std::for_each(m_data.begin(), m_data.end(), [](int& elem) { elem = 2 * elem + 5; });
-
-	showData();
+	std::for_each(m_data.begin(), m_data.end(), [](int& elem) { elem = elem * 2; });
 
 }
 
@@ -85,7 +65,7 @@ void Data::change()
 		if (predict(m_data.at(i)) == true)
 		{
 
-			m_data.at(i) = 10;
+			m_data.at(i) = 0;
 			count++;
 
 		}
@@ -95,15 +75,15 @@ void Data::change()
 	if (count == 0)
 	{
 
-		std::cout << "Элементов больше или равных 20 не было найдено!" << std::endl;
+		cout << "Элементов больше 10 не было найдено!" << endl;
 
 	}
 
 	else
 	{
-		std::cout << "Конечный массив:" << std::endl;
+		cout << "Конечный массив:" << endl;
 		showData();
-		std::cout << std::endl;
+		cout << endl;
 
 	}
 
