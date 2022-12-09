@@ -1,173 +1,421 @@
+#define NOMINMAX
+
+#include <Windows.h>
 #include <iostream>
-using namespace std;
+#include <iomanip>
+#include <time.h>
+#include <stdlib.h>
+#include <cmath>
+#include <stdio.h>
 
-#define size_Task 3
+#include "Task.h"
+#include "Generator.h"
+#include "Queue.h"
+#include "Distributor.h"
+#include "Stack.h"
+#include "Processor.h"
 
-struct stack
+int GetRandomNumber(int min, int max)
 {
-	float elem[size_Task];
-	int top;	
-};
 
-void init(struct stack *stk)
-{
-	stk->top = 0;	
+	static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
+
+	return static_cast<int>(rand() * fraction * (max - min + 1) + min);
+
 }
 
-void push(struct stack* stk, float f) //добавление элемента
+void CheckInput(int &input_buff, const int &flag)
 {
-	if (stk->top < size_Task)
+
+	if (flag == 0)
 	{
-		stk->elem[stk->top] = f;
-		stk->top++;
+
+		while ((!std::cin.good() || std::cin.peek() != '\n') || (input_buff < 1 || input_buff > 2))		//Проверка на то, что int
+		{
+
+			std::cerr << "Некорректный ввод данных!!!" << std::endl;
+			std::cout << "Вводимое поле должно быть равно 1 или 2!!!" << std::endl;
+			std::cout << "Повторите ввод!!!" << std::endl;
+
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			std::cout << "Введите число: ";
+			std::cin >> input_buff;
+			std::cout << std::endl;
+
+		}
+
 	}
-	else
-		cout << "Стек полон, количество элементов: " << stk->top << endl;
-}
-float pop(struct stack* stk) //удаление элемента
-{
-	float elem;
-	if ((stk->top) > 0)
+
+	if (flag == 1)
 	{
-		stk->top--;
-		elem = stk->elem[stk->top];
-		return elem;
+
+		while (!std::cin.good() || std::cin.peek() != '\n' || input_buff < 1)		//Проверка на то, что int
+		{
+
+			std::cerr << "Некорректный ввод данных!!!" << std::endl;
+			std::cout << "Вводимое поле должно быть целым положительным числом!!!" << std::endl;
+			std::cout << "Повторите ввод!!!" << std::endl;
+
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			std::cout << "Введите количество задач: ";
+			std::cin >> input_buff;
+			std::cout << std::endl;
+
+		}
+
 	}
-	else
+
+	if (flag == 2)
 	{
-		cout << "Стек пуст!\n";
-		return 0;
+
+		while (!std::cin.good() || std::cin.peek() != '\n' || (input_buff < 0 || input_buff > 2))		//Проверка на то, что int
+		{
+
+			std::cerr << "Некорректный ввод данных!!!" << std::endl;
+			std::cout << "Вводимое поле должно быть равно 0, 1 или 2!!!" << std::endl;
+			std::cout << "Повторите ввод!!!" << std::endl;
+
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			std::cout << "Тип задачи(от 0 до 2): ";
+			std::cin >> input_buff;
+			std::cout << std::endl;
+
+		}
+
 	}
+
+	if (flag == 3)
+	{
+
+		while (!std::cin.good() || std::cin.peek() != '\n' || (input_buff < 1 || input_buff > 5))		//Проверка на то, что int
+		{
+
+			std::cerr << "Некорректный ввод данных!!!" << std::endl;
+			std::cout << "Вводимое поле должно быть целым положительным числом в диапозоне от 1 до 5" << std::endl;
+			std::cout << "Повторите ввод!!!" << std::endl;
+
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			std::cout << "Длительность задачи(от 1 до 5): ";
+			std::cin >> input_buff;
+			std::cout << std::endl;
+
+		}
+
+	}
+
 }
 
-float stkTop(struct stack* stk) //верхнее значение стека
+void InputWidth(int &out_width)
 {
-	if ((stk->top) > 0)
+
+	std::cout << "Введите количество задач: ";
+
+	std::cin >> out_width;
+
+	CheckInput(out_width, 1);
+
+	std::cout << std::endl;
+
+}
+
+void AutoGenerateTasks(Generator &generator, const int &width)
+{
+
+	for (int i = 0; i < width; i++)
 	{
-		return stk->elem[stk->top - 1];
+
+		generator.pushBack(GetRandomNumber(0,2), GetRandomNumber(1,5), i);
+
 	}
-	else
+
+}
+
+void ManualGenerateTasks(Generator &generator, const int &width)
+{
+
+	int priority{};
+	int duration{};
+
+	std::cout << std::endl;
+	std::cout << "Введите параметры задач: " << std::endl;
+
+	for (int i = 0; i < width; i++)
 	{
-		cout << "Стек пуст!\n";
-		return 0;
+
+		std::cout << "Задача " << i << ": " << std::endl;
+		std::cout << "Тип задачи(от 0 до 2): ";
+		std::cin >> priority;
+
+		CheckInput(priority, 2);
+
+		std::cout << std::endl;
+		std::cout << "Длительность задачи(от 1 до 5): ";
+		std::cin >> duration;
+
+		CheckInput(duration, 3);
+
+		std::cout << std::endl;
+		std::cout << std::endl;
+
+		generator.pushBack(priority, duration, i);
+
 	}
+
 }
 
-int getcount(struct stack *stk) //кол-во элементов
+void ShowTasks(Generator &ListOfTasks, const int &width)
 {
-	return stk->top;
-}
 
-int isempty(struct stack* stk) //проверка на пустоту
-{
-	if (stk->top == 0) return 1;
-	else return 0;
-}
+	std::cout << std::endl;
+	std::cout << "Исходный список задач: " << std::endl;
+	std::cout << std::endl;
 
-void stkPrint(struct stack* stk) //вывод стека
-{
-	int i;
-	i = stk->top;
-	if (isempty(stk) == 1) return;
-	do
+	for (int i = 0; i < width; i++)
 	{
-		i--;
-		cout << "\n" << stk->elem[i];
-	} while (i > 0);
-}
 
-struct queue
-{
-	int qu[size_Task];
-	int rear, frnt;
-};
+		std::cout << "Задача " << i << std::endl;
+		std::cout << "Тип задачи: " << ListOfTasks(i, 1) << std::endl;
+		std::cout << "Длительность задачи: " << ListOfTasks(i, 2) << std::endl;
+		std::cout << std::endl;
 
-void queue_init(struct queue *q)
-{
-	q->frnt = 1;
-	q->rear = 0;
-}
-
-void queue_add(struct queue *q, int x)
-{
-	if (q->rear < size_Task)
-	{
-		q->rear++;
-		q->qu[q->rear] = x;
 	}
-	else
-		cout << "Очередь полная\n";
+
 }
 
-int isempty_q(struct queue* q)
+void TickInfo(Generator &generator, Queue &queue, Distributor &distributor, Stack &stack, 
+	Processor &processorOne, Processor &processorTwo, Processor &processorThree, const int &timer)
 {
-	if (q->rear < q->frnt) return 1;
-	else return 0;
+
+	std::cout << std::endl;
+	std::cout << "Состояние задач на " << timer << " такт:" << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "Состояние генератора: " << std::endl;
+	generator.getInfo();
+	std::cout << std::endl;
+
+	std::cout << "Состояние очереди: " << std::endl;
+	queue.getInfo();
+	std::cout << std::endl;
+
+	std::cout << "Состояние распределителя: " << std::endl;
+	distributor.getInfo();
+	std::cout << std::endl;
+
+	std::cout << "Состояние стэка: " << std::endl;
+	stack.getInfo();
+	std::cout << std::endl;
+
+	processorOne.getInfo();
+	std::cout << std::endl;
+
+	processorTwo.getInfo();
+	std::cout << std::endl;
+
+	processorThree.getInfo();
+	std::cout << std::endl;
+
 }
 
-void print_q(struct queue* q)
+void EmulateSystem(Generator &generator)
 {
-	int h;
-	if (isempty_q(q) == 1)
+
+	Queue queue{};
+	Stack stack{};
+	Processor processorOne{ 0, 0 };
+	Processor processorTwo{ 1, 0 };
+	Processor processorThree{ 2, 0 };
+	Distributor distributor{};
+
+	int timer{};
+
+	TickInfo(generator, queue, distributor, stack, processorOne, processorTwo, processorThree, timer);
+
+	while (true)
 	{
-		cout << "Очередь пуста\n";
+
+		if (!generator.allTasksGone())
+		{
+
+			if (queue.isEmpty())
+			{
+
+				queue.pushBack(generator.popFront());
+
+			}
+
+		}
+
+		if (queue.isFull())
+		{
+
+			distributor = queue.popFront();
+
+		}
+
+		else
+		{
+
+			if (queue.isEmpty() && !stack.isEmpty())
+			{
+
+				distributor = stack.popBack();
+
+			}
+
+		}
+
+		if (!distributor.isFree())
+		{
+
+			if ((distributor.getPriority() == processorOne.getPrio()) && processorOne.isFree())
+			{
+
+				processorOne.push(distributor.push());
+
+			}
+
+			else
+			{
+
+				if (distributor.getPriority() == processorOne.getPrio())
+				{
+
+					stack.pushBack(distributor.push());
+
+				}
+
+			}
+
+			if ((distributor.getPriority() == processorTwo.getPrio()) && processorTwo.isFree())
+			{
+
+				processorTwo.push(distributor.push());
+
+			}
+
+			else
+			{
+
+				if (distributor.getPriority() == processorTwo.getPrio())
+				{
+
+					stack.pushBack(distributor.push());
+
+				}
+
+			}
+
+			if ((distributor.getPriority() == processorThree.getPrio()) && processorThree.isFree())
+			{
+
+				processorThree.push(distributor.push());
+
+			}
+
+			else
+			{
+
+				if (distributor.getPriority() == processorThree.getPrio())
+				{
+
+					stack.pushBack(distributor.push());
+
+				}
+
+			}
+
+		}
+
+		if (!processorOne.isFree())
+		{
+
+			processorOne.tick();
+
+		}
+
+		if (!processorTwo.isFree())
+		{
+
+			processorTwo.tick();
+
+		}
+
+		if (!processorThree.isFree())
+		{
+
+			processorThree.tick();
+
+		}
+
+		timer++;
+
+		TickInfo(generator, queue, distributor, stack, processorOne, processorTwo, processorThree, timer);
+
+		if (generator.allTasksGone() && queue.isEmpty() && stack.isEmpty() && processorOne.isFree()
+			&& processorTwo.isFree() && processorThree.isFree() && distributor.isFree())
+		{
+
+			std::cout << "Система выполнила все задачи. Завершение работы системы." << std::endl;
+
+			break;
+
+		}
+
 	}
-	for (h = q->frnt; h <= q->rear; h++)
-	{
-		printf("%d ", q->qu[h]);
-	}
-	return;
+
 }
 
-int remove_q(struct queue* q)
+
+void main()
 {
-	int x;
-	if (isempty_q(q) == 1)
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	srand(time(NULL));
+
+	Generator generator{};
+	
+	int choice{0};
+	int width{0};
+
+	std::cout << "Выберите режим создания задач: " << std::endl;
+	std::cout << "1 - Автоматически" << std::endl;
+	std::cout << "2 - Вручную" << std::endl;
+	std::cout << "Введите число: ";
+	std::cin  >> choice;
+
+	CheckInput(choice, 0);
+
+	std::cout << std::endl;
+
+	if (choice == 1)
 	{
-		cout << "Очередь пуста\n";
-		return(0);
+
+		InputWidth(width);
+		AutoGenerateTasks(generator, width);
+		ShowTasks(generator, width);
+
 	}
-	x = q->qu[q->frnt];
-	q->frnt++;
-	return x;
-}
-int main()
-{
-	setlocale(LC_ALL, "RU");
-	struct stack* stk;
-	struct queue* q;
-	int i, n, a, n_q;
-	float elem;
-	stk = (struct stack*)malloc(sizeof(struct stack));
-	init(stk);
-	cout << "Введите количество элементов в стеке: ";
-	cin >> n;
-	for (i = 0; i < n; i++)
+
+	if (choice == 2)
 	{
-		cout << "Введите элемент: " << i << " ";
-		cin >> elem;
-		push(stk, elem);
+
+		InputWidth(width);
+		ManualGenerateTasks(generator, width);
+		ShowTasks(generator, width);
+
 	}
-	cout << "В стеке элементов " << getcount(stk) << endl;
-	stkPrint(stk);
-	cout << "\nВерхний элемент: " << stkTop(stk) << endl;
-	do
-	{
-		cout << "Извлекаем элемент " << pop(stk);
-		cout << " в стеке осталось элементов " << getcount(stk) << endl;
-	} while (isempty(stk) == 0);
-	q = (queue*)malloc(sizeof(queue));
-	queue_init(q);
-	cout << "Введите количество элементов в очереди: ";
-	cin >> n_q;
-	for (i = 0; i < n_q; i++)
-	{
-		cout << "Введите элемент: " << i << " ";
-		cin >> a;
-		queue_add(q, a);
-	}
-	cout << "\n";
-	print_q(q);
-	return 0;
+
+	EmulateSystem(generator);
 
 }
