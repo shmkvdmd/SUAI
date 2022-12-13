@@ -212,14 +212,14 @@ void inputData(Train& r)
 	}
 	cout << "Введите часы(00-24): "; 
 	r.hour = read_value("", true, true, true);
-	while ((!cin.good() || cin.peek() != '\n') || (r.hour < 0 || r.hour > 24))
+	while ((!cin.good()) || (r.hour < 0 || r.hour > 24))
 	{
 		cin.clear();
 		cout << "Введите часы(00-24): "; r.hour = read_value("", true, true, true); cout << endl;
 	}
 	cout << "Введите минуты(00-60): "; 
 	r.minute = read_value("", true, true, true);
-	while ((!cin.good() || cin.peek() != '\n') || (r.minute < 0 || r.minute > 60))
+	while ((!cin.good()) || (r.minute < 0 || r.minute > 60))
 	{
 		cin.clear();
 		cout << "Введите минуты(00-60): "; r.minute = read_value("", true, true, true); cout << endl;
@@ -334,10 +334,25 @@ List* savefile(List * head, List * cur)
 	if (!fin.is_open())
 		cout << "Файл не может быть открыт!\n";
 	inputData(r);
-	fin << endl << r.nazn << " " << r.number << " " << r.hour << ":" << r.minute;
+	fin << endl << r.nazn << " " << r.number << " " << r.hour << " " << r.minute;
 	fin.close();
 	return head;
 }
+//очистка памяти
+void Free(List** begin)
+{
+	if (*begin == 0) return;
+	List* p = *begin;
+	List* t;
+	while (p)
+	{
+		t = p;
+		p = p->next;
+		delete t;
+	}
+	*begin = NULL;
+}
+
 
 int main()
 {
@@ -346,6 +361,7 @@ int main()
 	List* cur = NULL;
 	Train r;
 	int n = -1;
+	Free(&head);
 	while (n != 0)
 	{
 		cout << endl <<
@@ -379,12 +395,13 @@ int main()
 				ptr = FindElem(head, r);
 				if (ptr == NULL)cout << "Запись не найдена!" << endl;
 				else { DelElem(&head, ptr); cout << "Запись удалена!" << endl; }; }
+			break;
 		}
 		case 3:
 		{
 			string destination;
 			if (!head) { cout << "Нет данных!" << endl; break; }
-			cout << "Введите пункт назначениея: "; cin >> destination;
+			cout << "Введите пункт назначения: "; cin >> destination;
 			cout << setw(20) << "Название" << setw(10) << "Номер" << setw(10) << "Время" << endl;
 			TaskFinder(head,destination);
 			break;
@@ -404,9 +421,19 @@ int main()
 		}
 		case 6:
 		{
+			Free(&head);
 			head = inputFile(head, cur);
 			break;
 		}
 		}
 	}
+	Free(&head);
+	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDOUT);
+	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDOUT);
+	_CrtDumpMemoryLeaks();
+	system("pause");
 }
