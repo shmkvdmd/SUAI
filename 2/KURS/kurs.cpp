@@ -8,6 +8,40 @@
 #define SYMB_LEN_DOUBLE 11
 
 using namespace std;
+
+
+int input_validation() // проверка на ошибку ввода
+{
+	int a;
+	bool ok;
+	do {
+		ok = true;
+
+		cin >> a;
+		if (!cin)             //проверка на ошибку при присваивании данных к переменной
+		{
+			ok = false;
+			cin.clear();                     // очистка потока от флагов
+			cin.ignore(1000, '\n');          // очистка потока
+			cout << "Переменная должна быть числом." << endl;
+		}
+		else {
+			if (cin.get() != '\n') //проверка на наличие символов после введённого значения
+			{
+				cin.ignore(1000, '\n');
+				ok = false;
+				cout << "После переменной не должно стоять пробелов или других символов." << endl;
+			}
+		}
+
+		if (!ok) cout << "Введите значение повторно." << endl;
+	} while (!ok);
+	return a;
+}
+
+
+
+
 char* get_string(int* len) {
 	*len = 0;
 	int capacity = 1;
@@ -192,7 +226,7 @@ struct Train
 	int number;
 	int hour;
 	int minute;
-}; 
+};
 struct List
 {
 	Train data;
@@ -203,28 +237,28 @@ void inputData(Train& r)
 {
 
 	cout << "Введите имя: "; cin >> r.nazn;
-	cout << "Введите номер (100-999): "; 
+	cout << "Введите номер (100-999): ";
 	r.number = read_value("", true, true, true);
 	cout << endl;
 	while ((!cin.good()) || (r.number < 100 || r.number > 999)) {
 		cin.clear();
-		cout << "Ошибка ввода, введите номер (100-999): "; r.number = read_value("",true, true, true);  cout << endl;
+		cout << "Ошибка ввода, введите номер (100-999): "; r.number = read_value("", true, true, true);  cout << endl;
 	}
-	cout << "Введите часы(00-24): "; 
+	cout << "Введите часы(00-24): ";
 	r.hour = read_value("", true, true, true);
 	while ((!cin.good()) || (r.hour < 0 || r.hour > 24))
 	{
 		cin.clear();
 		cout << "Введите часы(00-24): "; r.hour = read_value("", true, true, true); cout << endl;
 	}
-	cout << "Введите минуты(00-60): "; 
+	cout << "Введите минуты(00-60): ";
 	r.minute = read_value("", true, true, true);
 	while ((!cin.good()) || (r.minute < 0 || r.minute > 60))
 	{
 		cin.clear();
 		cout << "Введите минуты(00-60): "; r.minute = read_value("", true, true, true); cout << endl;
 	}
-} 
+}
 void inputData_d(Train& r)
 {
 	cout << "Введите имя: "; cin >> r.nazn;
@@ -273,8 +307,8 @@ void DelElem(List** begin, List* ptrCur)
 		*begin = (*begin)->next;
 	}
 	else
-	{ 
-			p = *begin;
+	{
+		p = *begin;
 		while (p->next != ptrCur)
 			p = p->next;
 		// удаление элемента
@@ -325,7 +359,7 @@ List* inputFile(List* head, List* cur)
 	cout << "Данные из файла получены\n";
 	return head;
 }
-List* savefile(List * head, List * cur)
+List* savefile(List* head, List* cur)
 {
 	Train r;
 	List* p = new List;
@@ -372,15 +406,17 @@ int main()
 			"5 - Сохранить в файл" << endl <<
 			"6 - Загрузить данные из файла" << endl <<
 			"0 - Выход\nВыберите действие: ";
-		cin >> n;
-		while (cin.fail() || (n < 0) || (n > 6)) {
+		n = input_validation();
+		if ((n < 0) || (n > 6)) {
+			n = NULL;
 			cin.clear();
 			cin.sync();
-			cout << "Ошибка ввода, выберите действие: "; cin >> n;
+			cout << "Введите значение повторно. ";
+			n = input_validation();
 		}
 		switch (n)
 		{
-		case 1: 
+		case 1:
 		{
 			inputData(r);
 			AddElem(&head, &cur, r);
@@ -403,7 +439,7 @@ int main()
 			if (!head) { cout << "Нет данных!" << endl; break; }
 			cout << "Введите пункт назначения: "; cin >> destination;
 			cout << setw(20) << "Название" << setw(10) << "Номер" << setw(10) << "Время" << endl;
-			TaskFinder(head,destination);
+			TaskFinder(head, destination);
 			break;
 		}
 		case 4:
@@ -435,5 +471,6 @@ int main()
 	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
 	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDOUT);
 	_CrtDumpMemoryLeaks();
-	system("pause");
+	return 0;
+	//system("pause");
 }
