@@ -54,6 +54,7 @@ public:
     int find_data(std::string data);
     void del(int id);
     void gen(int count);
+    void del_by_hashed(int key);
     void exprt(std::string destination);
     void edit_path(std::string path) { this->path = path; };
     int* get_free() { return free; };
@@ -219,13 +220,14 @@ void table::del(int id)
 {
     if (id > size)
     {
+
         return;
     }
 
     if (size == 1 and id == 1)
     {
         top = nullptr;
-
+        size--;
         return;
     }
 
@@ -239,7 +241,7 @@ void table::del(int id)
         current = current->next;
     }
     current->next = current->next->next;
-
+    size--;
 }
 
 void table::gen(int count)
@@ -262,7 +264,7 @@ void table::gen(int count)
         add(std::to_string(hash(key)), key);
         //std::cout << "gen " << i << " " << key << "\n";
        
-        if (i%100==0 and i<2000)
+        if (i%100==0 and i<2000 and i!=0)
         {
             system("cls");
             std::cout << i << "/" << count;
@@ -273,6 +275,25 @@ void table::gen(int count)
             std::cout << i << "/" << count;
         }
 
+    }
+}
+
+void table::del_by_hashed(int key)
+{
+    if ( std::stoi(top->data) == key and top)
+    {
+        top = top->next;
+        size--;
+        return;
+    }
+    for (str* current = top; current != nullptr; current = current->next) {
+        
+        if (std::stoi(current->next->data)==key)
+        {
+            current->next = current->next->next;
+            size--;
+            return;
+        }
     }
 }
 
@@ -320,7 +341,7 @@ int main()
     int ind, key;
     while (v != 88)
     {
-        std::cout << "1) to add random key\t2) to remove index\n3) to show the table\t4) to find id\n5) to find hashed key\t6) to export\n7)Enter your key\n\n88)to quit\n";
+        std::cout << "1) to add random key\t2) to remove index\n3) to show the table\t4) to find id\n5) to find hashed key\t6) to export\n7)Enter your key\n8)Delete by hashed\n88)to quit\n";
         data = "";
         ind = 0;
         key = 0;
@@ -375,6 +396,11 @@ int main()
             table.add(std::to_string(key), data);
             std::cout << "Added";
             break;
+        case 8:
+            std::cout << "Enter hashed key: ";
+
+            std::cin >> ind;
+            table.del_by_hashed(ind);
 
         default:
             break;
