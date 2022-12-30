@@ -1,8 +1,3 @@
-Ulyanovsk 691 1 13
-Krasnodar 142 12 56
-Astrahan 34 16 12
-Ulyanovsk 15 17 05
-Ufa 84 10 51
-Minsk 12 12 56
-Vladivostok 653 8 13
-Moscow 435 21 41
+Tajikistan 111 12:28
+Uzbekistan 222 13:37
+Dagestan 228 14:88
