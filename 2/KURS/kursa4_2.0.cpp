@@ -9,20 +9,49 @@ using namespace std;
 void AddElem(vector <string>& destination, vector <int>& number, vector <string>& time)
 {
 	string addDest, addTime;
-	int addNumb;
+	int addNumb, hour = 0, minute = 0;
 	cout << "Введите пункт назначения: "; cin >> addDest; destination.push_back(addDest);
-	cout << "Введите номер рейса: "; cin >> addNumb; number.push_back(addNumb);
-	cout << "Введите время рейса: "; cin >> addTime; time.push_back(addTime);
+	cout << "Введите номер рейса: "; cin >> addNumb;
+	while ((!cin.good()) || (addNumb < 100 || addNumb > 999)) {
+		cin.clear();
+		cout << "Ошибка ввода, введите номер (100-999): "; cin >> addNumb;  cout << endl;
+	}
+	number.push_back(addNumb);
+	cout << "Ввод времени рейса\nВведите часы(00-24): "; cin >> hour;
+	while ((!cin.good()) || (hour < 0 || hour > 24))
+	{
+		cin.clear();
+		cout << "Введите часы(00-24): "; cin >> hour; cout << endl;
+	}
+	cout << "Введите минуты(00-60): "; cin >> minute;
+	while ((!cin.good()) || (minute < 0 || minute > 60))
+	{
+		cin.clear();
+		cout << "Введите минуты(00-60): "; cin >> minute; cout << endl;
+	}
+	addTime = to_string(hour) + ":" + to_string(minute);
+	time.push_back(addTime);
 }
 
 void DelElem(vector <string>& destination, vector <int>& number, vector <string>& time)
 {
-	int choice;
+	int choice = 88;
 	auto iter = number.cbegin();
 	auto iter2 = destination.cbegin();
 	auto iter3 = time.cbegin();
-	cout << "Введите номер пункта назначения, который нужно удалить. Введите 666, чтобы удалить все данные: "; cin >> choice;
-	if (choice == 666)
+	int count = 0;
+	for (int i = 0; i < destination.size(); i++)
+	{
+		count++;
+	}
+	cout << "Введите номер пункта назначения, который нужно удалить. Введите 0, чтобы удалить все данные: ";
+	cin >> choice;
+	while ((!cin.good()) || (choice > count || choice < 0))
+	{
+		cin.clear();
+		cout << "Введено неверное значение "; cin >> choice; cout << endl;
+	}
+	if (choice == 0)
 	{
 		destination.clear();
 		number.clear();
@@ -115,6 +144,11 @@ int main()
 			"6 - Загрузить данные из файла" << endl <<
 			"0 - Выход\nВыберите действие: ";
 		cin >> menu;
+		while ((!cin.good()) || (menu < 0 || menu > 6))
+		{
+			cin.clear();
+			cout << "Введите значение повторно(0-6): "; cin >> menu; cout << endl;
+		}
 		switch (menu)
 		{
 		case 1:
