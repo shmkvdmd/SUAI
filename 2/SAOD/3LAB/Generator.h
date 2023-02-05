@@ -1,177 +1,76 @@
-#pragma once
-
 #include <iostream>
+using namespace std;
 
-#include "Task.h"
-
-class Generator
-{
-
-private:
-
-	int m_count;
-	Task *m_head;
-
-
+// генератор задач
+class Generator {
 public:
+    MYList* list = new MYList(-1);
 
-	Generator();
-	~Generator();
-
-	int &operator()(const int index, const int flag);
-
-	void pushBack(int taskPriority, int taskDuration, int taskTime);
-	Task *popFront();
-	bool allTasksGone(){ return m_count == 0; };
-	void getInfo();
+    Generator(int count, bool Auto_flag);
+    ~Generator();
+    Task get();
+    int get_size();
 
 };
 
-
-
-// START OF CONSTRUCTORS AND DESTRUCTORS
-
-Generator::Generator(): m_count{0}, m_head{nullptr}
-{}
-
-
-
-Generator::~Generator()
-{}
-
-// END OF CONSTRUCTORS AND DESTRUCTORS
-
-
-
-// START OF METHODS FOR GENERATOR
-
-void Generator::pushBack(int taskPriority, int taskDuration, int taskTime)
-{
-
-	if (m_head == nullptr)
-	{
-
-		m_head = new Task(taskPriority, taskDuration, taskTime);
-
-	}
-
-	else
-	{
-
-		Task *current = m_head;
-
-		while (current -> m_ptrNext != nullptr)
-		{
-
-			current = current -> m_ptrNext;
-
-		}
-
-		current -> m_ptrNext = new Task(taskPriority, taskDuration, taskTime);
-
-	}
-
-	m_count++;
-
+// генерирует случайное число в диапазоне от A до B
+int random_int(int a, int b) {
+    return a + (rand() % (b - a + 1));
 }
 
+// конструктор
+Generator::Generator(int Count, bool Auto_flag = true) {
+    if (Auto_flag) {
+        for (int i = 0; i < Count; i++) {
+            list->append(
+                random_int(1, 3),
+                i + 1,
+                random_int(1, 10)
+            );
+        }
+    }
+    else {
+        // Count = read_value("Количество задач: ", false, false, false);
+        cout << "Количество задач: ";
+        cin >> Count;
+
+        unsigned int priority;
+        unsigned int taskTime;
+        unsigned int durationTime;
+
+        for (int i = 0; i < Count; i++) {
+            cout << "Задача " << i << endl;
+
+            cout << "Приоритет: ";
+            cin >> priority;
+            cout << "Момент поступления: ";
+            cin >> taskTime;
+            cout << "Длительность выполнения: ";
+            cin >> durationTime;
+
+            list->append(
+                priority,
+                taskTime,
+                durationTime
+            );
+        }
+    }
 
 
-Task *Generator::popFront()
-{
-
-	Task *tmp = m_head;
-
-	m_head = m_head -> m_ptrNext;
-
-	m_count--;
-
-	tmp -> m_ptrNext = nullptr;
-
-	return tmp;
-
+    //draw_stack(list -> get_all(), list -> get_size());
 }
 
-
-
-void Generator::getInfo()
-{
-
-	Task *current = this -> m_head;
-
-	if (m_count == 0)
-	{
-
-		std::cout << "Генератор задач пуст!" << std::endl;
-		std::cout << std::endl;
-
-	}
-
-	else
-	{
-
-		std::cout << "В генераторе задач находится " << m_count << " задач." << std::endl;
-		std::cout << std::endl;
-
-		while (current != nullptr)
-		{
-
-			std::cout << "Задача " << current -> m_taskTime << std::endl;
-			std::cout << "Тип задачи: " << current -> m_taskPriority << std::endl;
-			std::cout << "Длительность задачи: " << current -> m_taskDuration << std::endl;
-			std::cout << std::endl;
-
-			current = current -> m_ptrNext;
-
-		}
-
-	}
-	
-
+// деструктор
+Generator::~Generator() {
+    delete list;
 }
 
-// END OF METHODS FOR GENERATOR
-
-
-
-// START OF OVERLOADS
-
-int &Generator::operator()(const int index, const int flag)
-{
-
-	Task *current = this->m_head;
-
-	int counter{ 0 };
-
-	while (current != nullptr)
-	{
-
-		if (counter == index && flag == 0)
-		{
-
-			return current -> m_taskTime;
-
-		}
-
-		if (counter == index && flag == 1)
-		{
-
-			return current -> m_taskPriority;
-
-		}
-
-		if (counter == index && flag == 2)
-		{
-
-			return current -> m_taskDuration;
-
-		}
-
-		current = current->m_ptrNext;
-		counter++;
-
-	}
-
+// получить элемент (после получения он удаляется)
+Task Generator::get() {
+    return list->pop(list->get_size() - 1);
 }
 
-// END OF OVERLOADS
+// получить текущий размер
+int Generator::get_size() {
+    return list->get_size();
+}
