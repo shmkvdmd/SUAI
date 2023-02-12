@@ -6,28 +6,57 @@
 #include <algorithm>
 using namespace std;
 
+int input_validation()
+{
+	int a;
+	bool ok;
+	do {
+		ok = true;
+
+		cin >> a;
+		if (!cin)           
+		{
+			ok = false;
+			cin.clear();                 
+			cin.ignore(1000, '\n');         
+			cout << "Переменная должна быть числом." << endl;
+		}
+		else {
+			if (cin.get() != '\n')
+			{
+				cin.ignore(1000, '\n');
+				ok = false;
+				cout << "После переменной не должно стоять пробелов или других символов." << endl;
+			}
+		}
+
+		if (!ok) cout << "Введите значение повторно." << endl;
+	} while (!ok);
+	return a;
+}
+
 void AddElem(vector <string>& destination, vector <int>& number, vector <string>& time)
 {
 	string addDest, addTime;
 	int addNumb, hour = 0, minute = 0;
 	cout << "Введите пункт назначения: "; cin >> addDest; destination.push_back(addDest);
-	cout << "Введите номер рейса: "; cin >> addNumb;
+	cout << "Введите номер рейса: "; addNumb = input_validation();
 	while ((!cin.good()) || (addNumb < 100 || addNumb > 999)) {
 		cin.clear();
-		cout << "Ошибка ввода, введите номер (100-999): "; cin >> addNumb;  cout << endl;
+		cout << "Ошибка ввода, введите номер (100-999): "; addNumb = input_validation();  cout << endl;
 	}
 	number.push_back(addNumb);
-	cout << "Ввод времени рейса\nВведите часы(00-24): "; cin >> hour;
+	cout << "Ввод времени рейса\nВведите часы(00-24): "; hour = input_validation();
 	while ((!cin.good()) || (hour < 0 || hour > 24))
 	{
 		cin.clear();
-		cout << "Введите часы(00-24): "; cin >> hour; cout << endl;
+		cout << "Введите часы(00-24): "; hour = input_validation(); cout << endl;
 	}
-	cout << "Введите минуты(00-60): "; cin >> minute;
+	cout << "Введите минуты(00-60): "; minute = input_validation();
 	while ((!cin.good()) || (minute < 0 || minute > 60))
 	{
 		cin.clear();
-		cout << "Введите минуты(00-60): "; cin >> minute; cout << endl;
+		cout << "Введите минуты(00-60): "; minute = input_validation(); cout << endl;
 	}
 	addTime = to_string(hour) + ":" + to_string(minute);
 	time.push_back(addTime);
@@ -45,11 +74,11 @@ void DelElem(vector <string>& destination, vector <int>& number, vector <string>
 		count++;
 	}
 	cout << "Введите номер пункта назначения, который нужно удалить. Введите 0, чтобы удалить все данные: ";
-	cin >> choice;
+	choice = input_validation();
 	while ((!cin.good()) || (choice > count || choice < 0))
 	{
 		cin.clear();
-		cout << "Введено неверное значение "; cin >> choice; cout << endl;
+		cout << "Введено неверное значение "; choice = input_validation(); cout << endl;
 	}
 	if (choice == 0)
 	{
@@ -143,11 +172,11 @@ int main()
 			"5 - Сохранить в файл" << endl <<
 			"6 - Загрузить данные из файла" << endl <<
 			"0 - Выход\nВыберите действие: ";
-		cin >> menu;
+		menu = input_validation();
 		while ((!cin.good()) || (menu < 0 || menu > 6))
 		{
 			cin.clear();
-			cout << "Введите значение повторно(0-6): "; cin >> menu; cout << endl;
+			cout << "Введите значение повторно(0-6): "; menu = input_validation(); cout << endl;
 		}
 		switch (menu)
 		{
