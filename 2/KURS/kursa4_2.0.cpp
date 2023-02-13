@@ -4,134 +4,168 @@
 #include <iomanip>
 #include <fstream>
 #include <algorithm>
+#include <windows.h>
 using namespace std;
 
-void AddElem(vector <string>& destination, vector <int>& number, vector <string>& time)
+int input_validation(int a,int b)
 {
-	string addDest, addTime;
-	int addNumb, hour = 0, minute = 0;
-	cout << "Введите пункт назначения: "; cin >> addDest; destination.push_back(addDest);
-	cout << "Введите номер рейса: "; cin >> addNumb;
-	while ((!cin.good()) || (addNumb < 100 || addNumb > 999)) {
-		cin.clear();
-		cout << "Ошибка ввода, введите номер (100-999): "; cin >> addNumb;  cout << endl;
-	}
-	number.push_back(addNumb);
-	cout << "Ввод времени рейса\nВведите часы(00-24): "; cin >> hour;
-	while ((!cin.good()) || (hour < 0 || hour > 24))
+	int x;
+	while (true)
 	{
-		cin.clear();
-		cout << "Введите часы(00-24): "; cin >> hour; cout << endl;
+		while (!(cin >> x))
+		{
+			cin.clear();
+			while (cin.get() != '\n');
+			cout << "Неверный ввод. Повторите." << endl;
+		}
+		if ((x < a) || (x > b))
+		{
+			cout << "Неверный ввод. Повторите." << endl;
+		}
+		else
+		{
+			break;
+		}
 	}
-	cout << "Введите минуты(00-60): "; cin >> minute;
-	while ((!cin.good()) || (minute < 0 || minute > 60))
-	{
-		cin.clear();
-		cout << "Введите минуты(00-60): "; cin >> minute; cout << endl;
-	}
-	addTime = to_string(hour) + ":" + to_string(minute);
-	time.push_back(addTime);
+	return x;
+
 }
 
-void DelElem(vector <string>& destination, vector <int>& number, vector <string>& time)
+struct TRAIN
+{
+	int number;
+	string destination, time;
+};
+
+struct comp
+{
+	bool operator() (const TRAIN& a, const TRAIN& b) const
+	{
+		return a.time < b.time;
+	}
+};
+
+vector <TRAIN> AddElem(vector <TRAIN>& vec_struct)
+{
+	vector <TRAIN> m;
+	TRAIN t1;
+	string addDest, addTime;
+	int addNumb, hour = 0, minute = 0;
+	cout << "Введите пункт назначения: "; cin >> addDest; t1.destination = addDest;
+	cout << "Введите номер рейса(100-999): "; addNumb = input_validation(100, 999);
+	t1.number = addNumb;
+	cout << "Ввод времени рейса\nВведите часы(00-23): "; hour = input_validation(0, 23);
+	cout << "Введите минуты(00-59): "; minute = input_validation(0, 59);
+	string h = to_string(hour); 
+	string mi = to_string(minute);
+	if (h.length() < 2)
+	{
+		h = "0" + h;
+	}
+	if (mi.length() < 2)
+	{
+		mi = "0" + mi;
+	}
+
+
+	addTime = h + ":" + mi;
+	t1.time = addTime;
+	vec_struct.push_back(t1);
+	return vec_struct;
+}
+
+vector <TRAIN> DelElem(vector <TRAIN>& vec_struct)
 {
 	int choice = 88;
-	auto iter = number.cbegin();
-	auto iter2 = destination.cbegin();
-	auto iter3 = time.cbegin();
+	auto iter = vec_struct.cbegin();
 	int count = 0;
-	for (int i = 0; i < destination.size(); i++)
+	for (int i = 0; i < vec_struct.size(); i++)
 	{
 		count++;
 	}
 	cout << "Введите номер пункта назначения, который нужно удалить. Введите 0, чтобы удалить все данные: ";
-	cin >> choice;
-	while ((!cin.good()) || (choice > count || choice < 0))
-	{
-		cin.clear();
-		cout << "Введено неверное значение "; cin >> choice; cout << endl;
-	}
+	choice = input_validation(0, count);
 	if (choice == 0)
 	{
-		destination.clear();
-		number.clear();
-		time.clear();
+		vec_struct.clear();
 	}
 	else
 	{
-		number.erase(iter + choice - 1);
-		destination.erase(iter2 + choice - 1);
-		time.erase(iter3 + choice - 1);
+		vec_struct.erase(iter + choice - 1);
 	}
+	return vec_struct;
 }
 
-void ShowTable(vector <string>& destination, vector <int>& number, vector <string>& time)
+void ShowTable(vector <TRAIN>& vec_struct)
 {
-
-	size_t dest = destination.size();
-	if (dest == 0)
+	for (int i = 0; i < vec_struct.size(); i++)
 	{
-		cout << "Нет данных\n";
-	}
-	else
-	{
-		cout << setw(25) << "Название рейса" << setw(19) << "Номер рейса" << setw(19) << "Время рейса" << "\n";
-		for (size_t i = 0; i < dest; i++)
-		{
-			cout << setw(20) << destination[i] << setw(20) << number[i] << setw(20) << time[i] << "\n";
-		}
+		cout << i << " | " <<  vec_struct[i].destination << " | " << vec_struct[i].number << " | " << vec_struct[i].time << "\n";
 	}
 }
 
-void FindElem(vector <string>& destination, vector <int>& number, vector <string>& time)
+vector <TRAIN> FindElem(vector <TRAIN>& vec_struct)
 {
 	string findDest;
 	int count = 0;
 	cout << "Введите название пункта назначения: "; cin >> findDest;
-	for (int i = 0; i < destination.size(); ++i)
+	for (int i = 0; i < vec_struct.size(); i++)
 	{
-		if (findDest == destination.at(i))
-		{
+		if (findDest == vec_struct[i].destination)
+		{ 
 			count++;
-			cout << setw(20) << destination[i] << setw(20) << number[i] << setw(20) << time[i] << "\n";
+			cout << vec_struct[i].destination << " | " << vec_struct[i].number << " | " << vec_struct[i].time << "\n";
 		}
 	}
 	if (count == 0)
 		cout << "Рейсы не найдены\n";
+	return vec_struct;
 }
-void LoadTable(vector <string>& destination, vector <int>& number, vector <string>& time)
+vector <TRAIN> LoadTable(vector <TRAIN>& vec_struct)
 {
+	TRAIN t;
 	ofstream write;
 	write.open("data.txt", ios_base::out | ios_base::trunc);
-	for (int i = 0; i < destination.size(); ++i)
+	for (int i = 0; i < vec_struct.size(); ++i)
 	{
-		write << destination[i] << " " << number[i] << " " << time[i] << "\n";
+		write << vec_struct[i].destination << " " << vec_struct[i].number << " " << vec_struct[i].time << "\n";
 	}
 	write.close();
+	return vec_struct;
 }
 
-void ReadTable(vector <string>& destination, vector <int>& number, vector <string>& time)
+
+vector <TRAIN> ReadTable(vector <TRAIN>& vec_struct)
 {
-	int n;
-	string d, t;
+	TRAIN t;
 	ifstream read;
 	read.open("data.txt", ios_base::in);
-	while (read >> d >> n >> t)
+	while (read >> t.destination && read >> t.number && read >> t.time)
 	{
-		destination.push_back(d);
-		number.push_back(n);
-		time.push_back(t);
+		vec_struct.push_back(t);
 	}
 	read.close();
 	cout << "Данные получены\n";
+	return vec_struct;
+}
+
+
+vector <TRAIN> sorting(vector <TRAIN>& vec_struct)
+{
+	sort(vec_struct.begin(), vec_struct.end(),comp());
+	return vec_struct;
 }
 
 int main()
 {
-	setlocale(LC_ALL, "RU");
+	SetConsoleCP(1251);                
+	SetConsoleOutputCP(1251);
 	vector <string> destination = {};
 	vector <int> number = {};
 	vector <string> time = {};
+	vector <TRAIN> vec_struct;
+	TRAIN struct1;
+
 	int menu = -111;
 	while (menu != 0)
 	{
@@ -142,43 +176,44 @@ int main()
 			"4 - Вывод на экран" << endl <<
 			"5 - Сохранить в файл" << endl <<
 			"6 - Загрузить данные из файла" << endl <<
+			"7 - сортировка по времени" << endl <<
 			"0 - Выход\nВыберите действие: ";
-		cin >> menu;
-		while ((!cin.good()) || (menu < 0 || menu > 6))
-		{
-			cin.clear();
-			cout << "Введите значение повторно(0-6): "; cin >> menu; cout << endl;
-		}
+		menu = input_validation(0,7);
 		switch (menu)
 		{
 		case 1:
 		{
-			AddElem(destination, number, time);
+			AddElem(vec_struct);
 			break;
 		}
 		case 2:
 		{
-			DelElem(destination, number, time);
+			DelElem(vec_struct);
 			break;
 		}
 		case 3:
 		{
-			FindElem(destination, number, time);
+			FindElem(vec_struct);
 			break;
 		}
 		case 4:
 		{
-			ShowTable(destination, number, time);
+			ShowTable(vec_struct);
 			break;
 		}
 		case 5:
 		{
-			LoadTable(destination, number, time);
+			LoadTable(vec_struct);
 			break;
 		}
 		case 6:
 		{
-			ReadTable(destination, number, time);
+			ReadTable(vec_struct);
+			break;
+		}
+		case 7:
+		{
+			sorting(vec_struct);
 			break;
 		}
 		}
