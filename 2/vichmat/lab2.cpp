@@ -58,6 +58,7 @@ int main()
 	vector<vector <double>> matrix(stroka, vector<double>(stolbec));
 	vector<vector <double>> ematrix(stroka, vector<double>(stolbec));
 	vector <double> matrixb(4);
+	vector <double> check(4);
 	vector <double> xmatrix(4);
 	xmatrix = { 0 };
 	for (int i = 0; i < stroka; i++)
@@ -83,7 +84,7 @@ int main()
 	for (int i = 0; i < stroka; i++)
 	{
 
-		cout << "Введите элемент для " << 1 << " строки и " << i+1 << " столбца: ";
+		cout << "Введите элемент для " << 1 << " строки и " << i + 1 << " столбца: ";
 		cin >> value;
 		matrixb[i] = value;
 
@@ -101,13 +102,23 @@ int main()
 				  { 0, 1, 0, 0 },
 				  { 0, 0, 1, 0 },
 				  { 0, 0, 0, 1 }
-	};
-	xmatrix = {0,0,0,0};
+	}; // единичная матрица
+	xmatrix = { 0,0,0,0 };
 	invers(matrix, ematrix); // находим обратную матрицу A^-1
 	multi(ematrix, matrixb, xmatrix); // перемножаем обратную матрицу A^-1 на вектор B
 	for (int i = 0; i < stroka; i++)
 		cout << "X[" << i << "] = " << xmatrix[i] << endl;
-	cout << endl;
+	cout << "\nПроверка подстановкой(сначала найденный ответ, потом матрица B)\n";
+	invers(ematrix, matrix);
+	for (int i = 0; i < stroka; i++)
+	{
+		double answer = 0;
+		for (int j = 0; j < stolbec; j++)
+		{
+			answer += matrix[i][j] * xmatrix[j];
+		}
+		cout << answer << " | " << matrixb[i] << endl;
+	}
 	system("pause");
 	return 0;
 }
