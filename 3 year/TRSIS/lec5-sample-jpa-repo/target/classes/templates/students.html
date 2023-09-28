@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> 
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <title>Список студентов</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script src="js/students.js"></script>
+    </head>
+    <body ng-app="students" ng-controller="StudentsController">
+
+        <h1>Список студентов</h1>
+
+        <div ng-controller="getStudents" ng-show="studentsList.length > 0">
+            <table id="studentsTable">
+                <thead>
+                    <tr>
+                        <th>ИД</th>
+                        <th>Имя</th>
+                        <th>Вариант задания</th>
+                        <th>Количество лаб</th>
+                        <th>Рейтинг</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="student in studentsList" id="{{student.id}}">
+                        <td>{{student.id}}</td>
+                        <td>{{student.fullName}}</td>
+                        <td>{{student.assignmentVariant}}</td>
+                        <td>{{student.labCount}}</td>
+                        <td>{{student.rating}}</td>
+                        <td><input type="button" value="Удалить" ng-click="delete(student.id)"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <form role="form" ng-submit="addStudent()">
+                <div>
+                    <label>Имя</label>
+                    <div>
+                        <input type="text" name="fullName" ng-model="fullName" />
+                    </div>
+                </div>
+                <div>
+                    <label>Вариант задания</label>
+                    <div>
+                        <input type="text" name="assignmentVariant" ng-model="assignmentVariant" />
+                    </div>
+                </div>
+                <div>
+                    <label>Количество лаб</label>
+                    <div>
+                        <input type="text" name="labCount" ng-model="labCount" />
+                    </div>
+                </div>
+                <div>
+                    <label>Рейтинг</label>
+                    <div>
+                        <input type="text" name="rating" ng-model="rating" />
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="submit" value="Добавить"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

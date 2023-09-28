@@ -1,0 +1,10 @@
+info\stepanoff\trsis\lab1\servlets\ExampleServlet.class
+info\stepanoff\trsis\lab1\servlets\SearchStudentServlet.class
+info\stepanoff\trsis\lab1\config\WebSecurityConfig.class
+info\stepanoff\trsis\lab1\filters\ExampleFilter.class
+info\stepanoff\trsis\lab1\model\Student.class
+info\stepanoff\trsis\lab1\servlets\AddStudentServlet.class
+info\stepanoff\trsis\lab1\servlets\DeleteStudentServlet.class
+info\stepanoff\trsis\lab1\Application.class
+info\stepanoff\trsis\lab1\filters\ExampleFilter$1.class
+info\stepanoff\trsis\lab1\model\DataModel.class

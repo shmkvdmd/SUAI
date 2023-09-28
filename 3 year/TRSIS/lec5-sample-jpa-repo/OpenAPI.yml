@@ -1,0 +1,94 @@
+openapi: 3.0.1
+info:
+  title: Список студентов
+  version: 1.0.0
+  description: Лабораторная работа 2
+
+paths:
+  /public/rest/students:
+    get:
+      summary: Получить список студентов
+      responses:
+        '200':
+          description: Успешный запрос
+        '404':
+          description: Список студентов пуст
+
+    post:
+      summary: Добавить нового студента
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '201':
+          description: Успешное создание студента
+        '400':
+          description: Некорректный запрос
+
+  /public/rest/students/{id}:
+    get:
+      summary: Получить информацию о студенте по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор студента
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный запрос
+        '404':
+          description: Студент с указанным ID не найден
+
+    delete:
+      summary: Удалить студента по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор студента
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Успешное удаление студента
+        '404':
+          description: Студент с указанным ID не найден
+
+  /public/rest/students/search:
+    post:
+      summary: Поиск студентов по критериям
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                searchQuery:
+                  type: string
+      responses:
+        '200':
+          description: Успешный запрос
+        '400':
+          description: Некорректный запрос
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: ФИО студента
+        assignmentVariant:
+          type: integer
+          description: Вариант задания
+        labCount:
+          type: integer
+          description: Число сданных лабораторных
+        rating:
+          type: number
+          description: Рейтинг студента

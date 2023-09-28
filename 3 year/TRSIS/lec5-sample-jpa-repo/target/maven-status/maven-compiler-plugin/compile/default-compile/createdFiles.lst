@@ -1,0 +1,8 @@
+info\stepanoff\trsis\samples\Application.class
+info\stepanoff\trsis\samples\db\dao\StudentRepository.class
+info\stepanoff\trsis\samples\rest\StudentRestService.class
+info\stepanoff\trsis\samples\service\StudentService.class
+info\stepanoff\trsis\samples\db\model\Student.class
+info\stepanoff\trsis\samples\config\WebSecurityConfig.class
+info\stepanoff\trsis\samples\config\ControllersConfig.class
+info\stepanoff\trsis\samples\service\StudentServiceImpl.class
