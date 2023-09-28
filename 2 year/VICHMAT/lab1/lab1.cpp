@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <cmath>
 using namespace std;
 
@@ -119,7 +119,7 @@ int main()
 
 
 
-        cout << "\n" << "X = " <<  result << "\nКол-во итераций " << iter << endl;
+        cout << "\n" << "X = " << result << "\nКол-во итераций " << iter << endl;
 
         cout << "\nФункция f(x) = " << func(result) << endl;
         cout << "\nХотите найти еще один корень?\n";
