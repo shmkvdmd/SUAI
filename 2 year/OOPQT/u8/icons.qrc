@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/src">
+        <file>free-icon-mail-646094.png</file>
+        <file>free-icon-mailing-10070244.png</file>
+        <file>free-icon-recipient-9101806.png</file>
+        <file>photo_2023-05-30_22-47-25.jpg</file>
+    </qresource>
+</RCC>
