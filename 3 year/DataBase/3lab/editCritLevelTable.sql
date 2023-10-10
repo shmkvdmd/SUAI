@@ -8,11 +8,11 @@
   
   -- Добавление столбца
   ALTER TABLE critlevel
-  ADD critDescrption VARCHAR(255);
+  ADD critDescrШption VARCHAR(255);
   
     -- Изменение типа столбца
-  ALTER TABLE critlevel
-  MODIFY COLUMN critDescription CHAR(100);
+  -- ALTER TABLE critlevel
+  -- MODIFY COLUMN critDescription CHAR(100);
   
   -- Удаление столбца
   ALTER TABLE critlevel
