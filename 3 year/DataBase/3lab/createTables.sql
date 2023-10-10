@@ -41,8 +41,8 @@ CREATE TABLE bug
 
 CREATE TABLE bug_developer
 (
-	id_bug INT,
-    id_developer INT,
+	id_bug INT NOT NULL,
+    id_developer INT NOT NULL,
     PRIMARY KEY (id_bug, id_developer),
     FOREIGN KEY (id_bug) REFERENCES bug(id_bug) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_developer) REFERENCES developer(id_developer) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -50,8 +50,8 @@ CREATE TABLE bug_developer
 
 CREATE TABLE project_bug
 (
-	id_project INT,
-    id_bug INT,
+	id_project INT NOT NULL,
+    id_bug INT NOT NULL,
     PRIMARY KEY (id_project, id_bug),
     FOREIGN KEY(id_project) REFERENCES project(id_project) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY(id_bug) REFERENCES bug(id_bug) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -59,8 +59,8 @@ CREATE TABLE project_bug
 
 CREATE TABLE project_tester
 (
-	id_project INT,
-    id_tester INT,
+	id_project INT NOT NULL,
+    id_tester INT NOT NULL,
     PRIMARY KEY (id_project, id_tester),
     FOREIGN KEY(id_project) REFERENCES project(id_project) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY(id_tester) REFERENCES tester(id_tester) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -68,8 +68,8 @@ CREATE TABLE project_tester
 
 CREATE TABLE project_developer
 (
-	id_project INT,
-    id_developer INT,
+	id_project INT NOT NULL,
+    id_developer INT NOT NULL,
     PRIMARY KEY (id_project, id_developer),
     FOREIGN KEY(id_project) REFERENCES project(id_project) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY(id_developer) REFERENCES developer(id_developer) ON DELETE RESTRICT ON UPDATE CASCADE
