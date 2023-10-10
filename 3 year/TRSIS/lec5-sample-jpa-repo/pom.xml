@@ -39,6 +39,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -74,6 +78,7 @@
         </dependency>
     </dependencies>
     <build>
+        
         <finalName>trsis-sample-jpa-repo</finalName>
         <plugins>
             <plugin>
@@ -85,7 +90,35 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
-            </plugin>          
+            </plugin>      
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>generateKeyPair</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <alias>tomcat</alias>
+                    <storetype>PKCS12</storetype>
+                    <keyalg>RSA</keyalg>
+                    <keysize>2048</keysize>
+                    <keystore>${project.basedir}/target/keystore.p12</keystore>
+                    <dname>CN=stepanoff.info, OU=stepanoff.info, O=stepanoff.info, L=SPB, ST=SPB, C=NO</dname>
+                    <validity>3650</validity>
+                    <password>mypassword</password>
+                    <storepass>mypassword</storepass>
+                    <workingDirectory>${basedir}</workingDirectory>
+                    <storetype>pkcs12</storetype>
+                </configuration>
+            </plugin>
+                
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

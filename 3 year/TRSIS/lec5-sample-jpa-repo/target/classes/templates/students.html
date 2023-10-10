@@ -2,13 +2,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> 
     <head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <meta name="_csrf" content="${_csrf.token}" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" content="${_csrf.parameterName}" th:content="${_csrf.parameterName}"/>
         <title>Список студентов</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
         <script src="js/students.js"></script>
     </head>
     <body ng-app="students" ng-controller="StudentsController">
 
+        <div sec:authorize="isAnonymous()" >
+            <h1><a href="/login">Login</a></h1>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">     
+            <form name="logoutForm" th:action="@{/logout}" method="post">
+                <input type="submit"  class="btn btn-primary" value="Sign Out"/>
+            </form>
+        </div>
+        
         <h1>Список студентов</h1>
 
         <div ng-controller="getStudents" ng-show="studentsList.length > 0">
@@ -30,12 +46,12 @@
                         <td>{{student.assignmentVariant}}</td>
                         <td>{{student.labCount}}</td>
                         <td>{{student.rating}}</td>
-                        <td><input type="button" value="Удалить" ng-click="delete(student.id)"/></td>
+                        <td><div  sec:authorize="isAuthenticated()"><input type="button" value="Удалить" ng-click="delete(student.id)"/></div></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div>
+        <div  sec:authorize="isAuthenticated()">
             <form role="form" ng-submit="addStudent()">
                 <div>
                     <label>Имя</label>

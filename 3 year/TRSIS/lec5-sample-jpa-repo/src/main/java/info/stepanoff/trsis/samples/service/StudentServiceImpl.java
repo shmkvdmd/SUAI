@@ -24,7 +24,6 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentRepository.deleteById(id);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
-            //for the reason of idempotency leave this blank
         }
     }
 

@@ -1,8 +1,15 @@
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\service\LoginServiceImpl.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\db\dao\UserRepository.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\db\model\Student.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\service\LoginService.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\service\LoggedUserDetailsService.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\config\ControllersConfig.java
 C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\Application.java
 C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\db\dao\StudentRepository.java
-C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\db\model\Student.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\db\model\User.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\rest\ForbiddenException.java
 C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\service\StudentService.java
 C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\service\StudentServiceImpl.java
 C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\config\WebSecurityConfig.java
 C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\rest\StudentRestService.java
-C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\config\ControllersConfig.java
+C:\Users\Demid\Desktop\trsislecturesmaterials-main\lec5-sample-jpa-repo\src\main\java\info\stepanoff\trsis\samples\service\MyLogin.java
