@@ -6,7 +6,7 @@ WHERE t_first_name = 'Ivan';
 -- Обновление одного
 UPDATE tester
 SET t_first_name = 'Vasya'
-WHERE ('id_tester' = '2');
+WHERE id_tester = '2';
 
 -- Удаление одного
 DELETE FROM tester 
