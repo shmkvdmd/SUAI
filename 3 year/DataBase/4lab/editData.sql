@@ -17,12 +17,12 @@ DELETE FROM tester
 WHERE t_surname = 'Петров';
 
 -- Пример использования MERGE
-MERGE INTO target_table AS T
-USING source_table AS S
-ON T.id = S.id
+MERGE INTO developer AS dev
+USING tester AS test
+ON dev.id_developer = test.id_tester
 WHEN MATCHED THEN
-  UPDATE SET T.column1 = S.column1, T.column2 = S.column2
+  UPDATE SET dev.d_first_name = test.t_first_name, dev.d_surname = test.t_surname,dev.d_lastname = test.t_lastname
 WHEN NOT MATCHED THEN
-  INSERT (id, column1, column2) VALUES (S.id, S.column1, S.column2)
+  INSERT (id_developer, d_first_name, d_surname, d_lastname) VALUES (test.id_tester, test.t_first_name, test.t_surname,test.t_lastname)
 WHEN NOT MATCHED BY SOURCE THEN
   DELETE;
