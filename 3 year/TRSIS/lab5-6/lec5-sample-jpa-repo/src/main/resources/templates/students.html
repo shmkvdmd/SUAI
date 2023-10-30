@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> 
+    <head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <meta name="_csrf" content="${_csrf.token}" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" content="${_csrf.parameterName}" th:content="${_csrf.parameterName}"/>
+        <title>Список студентов</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
+        <script src="js/students.js"></script>
+        <script src="@{/css/bootstrap.min.css}"></script>
+        <script src="@{/css/login.css}"></script>
+    </head>
+    <body ng-app="students" ng-controller="StudentsController">
+
+        <div sec:authorize="isAnonymous()" >
+            <h1><a href="/login" th:text="#{students.login}">Login</a></h1>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">     
+            <form name="logoutForm" th:action="@{/logout}" method="post">
+                <input type="submit"  class="btn btn-primary" value="Sign Out" th:value="#{students.signout}"/>
+            </form>
+        </div>
+        
+        <h1 th:text="#{students.students}">Список студентов на языке локали</h1>
+
+        <div ng-controller="getStudents" ng-show="studentsList.length > 0">
+            <table id="studentsTable">
+                <thead>
+                    <tr>
+                        <th>ИД</th>
+                        <th>Имя</th>
+                        <th>Вариант задания</th>
+                        <th>Количество лаб</th>
+                        <th>Рейтинг</th>
+                        <th>Номер группы</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="student in studentsList" id="{{student.id}}">
+                        <td>{{student.id}}</td>
+                        <td>{{student.fullName}}</td>
+                        <td>{{student.assignmentVariant}}</td>
+                        <td>{{student.labCount}}</td>
+                        <td>{{student.rating}}</td>
+                        <td>{{student.groupNumber}}</td>
+                        <td><div  sec:authorize="isAuthenticated()"><input type="button" value="Удалить" ng-click="delete(student.id)" th:value="#{students.delete}"/></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <a href="/groups" th:text="#{students.backToGroups}">Назад к списку групп</a>
+        </div>
+        <div  sec:authorize="isAuthenticated()">
+            <h2>Управление группами</h2>
+        <a href="/groups" th:text="#{students.groupsPage}">Перейти к группам</a>
+            <form role="form" ng-submit="addStudent()">
+                <div>
+                    <label th:text="#{students.fullName}">Имя</label>
+                    <div>
+                        <input type="text" name="fullName" ng-model="fullName" />
+                    </div>
+                </div>
+                <div>
+                    <label th:text="#{students.assignmentVariant}">Вариант задания</label>
+                    <div>
+                        <input type="text" name="assignmentVariant" ng-model="assignmentVariant" />
+                    </div>
+                </div>
+                <div>
+                    <label th:text="#{students.labCount}">Количество лаб</label>
+                    <div>
+                        <input type="text" name="labCount" ng-model="labCount" />
+                    </div>
+                </div>
+                <div>
+                    <label th:text="#{students.rating}">Рейтинг</label>
+                    <div>
+                        <input type="text" name="rating" ng-model="rating" />
+                    </div>
+                </div>
+                <div>
+                    <label th:text="#{students.groupNumber}">Номер группы</label>
+                    <div>
+                        <input type="text" name="groupNumber" ng-model="groupNumber" />
+                    </div>
+                    </div>
+                <div>
+                    <div>
+                        <input type="submit" value="Добавить" th:value="#{students.add}"/>
+                    </div>
+                </div>
+            </form>
+            <form ng-submit="searchStudents()">
+                <label th:text="#{students.searchByFullName}">Поиск по ФИО:</label>
+                <input type="text" ng-model="searchFullName" />
+                <input type="submit" value="Поиск" th:value="#{students.search}" />
+            </form>
+            <div ng-show="searchResults.length > 0">
+            <h2>Результаты поиска:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ИД</th>
+                        <th>Имя</th>
+                        <th>Вариант задания</th>
+                        <th>Количество лаб</th>
+                        <th>Рейтинг</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="student in searchResults">
+                        <td>{{student.id}}</td>
+                        <td>{{student.fullName}}</td>
+                        <td>{{student.assignmentVariant}}</td>
+                        <td>{{student.labCount}}</td>
+                        <td>{{student.rating}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+    </body>
+</html>

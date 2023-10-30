@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="_csrf" content="${_csrf.token}" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.parameterName}" th:content="${_csrf.parameterName}" />
+    <link href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen">
+    <title th:text="#{groups.groups}">Groups in our university</title>
+    <script src="@{/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="@{/css/login.css}"/>
+</head>
+<body>
+
+    <div sec:authorize="isAnonymous">
+        <h1><a href="/login" th:text="#{students.login}">Login</a></h1>
+    </div>
+
+    <div sec:authorize="isAuthenticated">
+        <form name="logoutForm" th:action="@{/logout}" method="post">
+            <input type="submit" class="btn btn-primary" value="Sign Out" th:value="#{students.signout}" />
+        </form>
+    </div>
+
+    <h1 th:text="#{groups.groups}">Groups in our university</h1>
+    
+    <div sec:authorize="isAuthenticated()">
+    <form action="#" th:action="@{/groups/save}" th:object="${group}" method="post">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th><label th:text="#{groups.id}">Id</label></th>
+                    <th><label th:text="#{groups.number}">Number</label></th>
+                </tr>
+            </thead>
+            <tr th:each="group : ${groups}">
+                <td th:text="${group.id}"></td>
+                <td th:text="${group.number}"></td>
+                <td>
+                    <a th:href="@{'/groups/delete/' + ${group.id}}" class="btn btn-danger" th:text="#{groups.delete}">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td><label th:text="#{groups.id}" /></td>
+                <td><input type="number" th:field="*{id}" /></td>
+            </tr>
+            <tr>
+                <td><label th:text="#{groups.number}" /></td>
+                <td><input type="text" th:field="*{number}" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Add" th:value="#{groups.add}" /></td>
+            </tr>
+        </table>
+    </form>
+    </div>
+
+    <div>
+        <a href="/students" th:text="#{groups.backToStudents}">Back to Students List</a>
+    </div>
+</body>
+</html>
