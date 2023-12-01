@@ -9,29 +9,21 @@ WHERE started = (
 );
 --д. Тестировщик, с самым большим количеством добавленных багов
 --С 2 not exists
-SELECT t.id_tester, t.t_first_name, t.t_surname, t.t_lastname
-FROM tester t
+SELECT t.id_tester, t.t_first_name, t.t_surname, t.t_lastname FROM tester t
 WHERE NOT EXISTS (
-    SELECT 1
-    FROM bug b1
+    SELECT 1 FROM bug b1
     WHERE b1.id_tester = t.id_tester
 ) OR NOT EXISTS (
-    SELECT 1
-    FROM bug b2
+    SELECT 1 FROM bug b2
     WHERE b2.id_tester = t.id_tester
     GROUP BY b2.id_tester
     HAVING COUNT(b2.id_bug) < (
-        SELECT COUNT(b3.id_bug)
-        FROM bug b3
+        SELECT COUNT(b3.id_bug) FROM bug b3
         WHERE b3.id_tester = t.id_tester
     )
 )
-ORDER BY (
-    SELECT COUNT(b.id_bug)
-    FROM bug b
-    WHERE b.id_tester = t.id_tester
-) DESC
 LIMIT 1;
+
 
  -- С использованием агрегатных функций
 SELECT id_tester, t_first_name, t_surname, t_lastname
