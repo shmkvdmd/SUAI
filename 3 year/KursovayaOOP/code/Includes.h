@@ -1,0 +1,21 @@
+#ifndef INCLUDES_H
+#define INCLUDES_H
+#include <QString>
+#include <QtSql/QSqlDatabase>
+#include <QDebug>
+#include <QtSql/QSql>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlQuery>
+#include <QTimer>
+#include <QThread>
+#include <QtSql/QSqlTableModel>
+#include <QTableView>
+#include <QHeaderView>
+#include <QVBoxLayout>
+#include <QSortFilterProxyModel>
+#include <QStringList>
+#include <QMessageBox>
+#include <QtSql/QSqlRecord>
+#include <QTableWidget>
+#include <QWidget>
+#endif // INCLUDES_H
