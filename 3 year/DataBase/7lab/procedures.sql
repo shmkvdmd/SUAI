@@ -15,6 +15,25 @@ DELIMITER ;
 --Вызов процедуры
 CALL InsertTester('Иван', 'Иванов','Иванович');
 
+
+--Процедура с очисткой справочников
+DELIMITER //
+
+CREATE PROCEDURE DeleteProjectBugWithCleanup(IN projectID INT, IN bugID INT)
+BEGIN
+    -- Удаляем запись из таблицы project_bug
+    DELETE FROM project_bug WHERE id_project = projectID AND id_bug = bugID;
+
+    -- Если нет зависимых данных в bug_developer, удаляем запись из таблицы bug
+    IF NOT EXISTS (SELECT 1 FROM bug_developer WHERE id_bug = bugID) THEN
+        DELETE FROM bug WHERE id_bug = bugID;
+    END IF;
+END //
+
+DELIMITER ;
+
+CALL DeleteProhectBugWithCleanup(1,1);
+
 --Хранимая процедура удаления тестировщика
 DELIMITER //
 
