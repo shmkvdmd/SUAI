@@ -85,3 +85,17 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER update_foreign_key_project_tester
+BEFORE UPDATE ON project_tester
+FOR EACH ROW
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM project WHERE id_project = NEW.id_project) OR
+       NOT EXISTS (SELECT 1 FROM tester WHERE id_tester = NEW.id_tester) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Не существует проекта или тестировщика';
+    END IF;
+END;
+//
+DELIMITER ;

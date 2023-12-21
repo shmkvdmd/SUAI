@@ -1,29 +1,25 @@
---г. Критический баг, который добавили первым
---1) С использованием агрегатных функций
-SELECT id_bug, bug_name
-FROM bug
+-- г. Критический баг, который добавили первым
+-- 1) С использованием агрегатных функций
+SELECT id_bug, bug_name FROM bug
 JOIN critlevel ON critlevel.id_crit = bug.id_crit
 	WHERE crit_name = 'Критический'
 AND started = (
-    SELECT MIN(started)
-    FROM bug
+    SELECT MIN(started) FROM bug
     JOIN critlevel ON critlevel.id_crit = bug.id_crit
 	WHERE crit_name = 'Критический'
 );
 
 
---2) С использованием ALL
-SELECT id_bug, bug_name
-FROM bug
+-- 2) С использованием ALL
+SELECT id_bug, bug_name FROM bug
 JOIN critlevel ON critlevel.id_crit = bug.id_crit
 	WHERE crit_name = 'Критический'
 AND started <= ALL (
-    SELECT (started)
-    FROM bug
+    SELECT (started) FROM bug
     JOIN critlevel ON critlevel.id_crit = bug.id_crit
 	WHERE crit_name = 'Критический'
 );
---д. Тестировщик, с самым большим количеством добавленных багов
+-- д. Тестировщик, с самым большим количеством добавленных багов
 SELECT t.id_tester, t.t_first_name, t.t_surname, t.t_lastname FROM tester t
 WHERE t.id_tester NOT IN (
     SELECT b.id_tester FROM bug b
@@ -50,13 +46,7 @@ GROUP BY t.id_tester
 ORDER BY COUNT(b.id_bug) DESC
 LIMIT 1;
 
-SELECT t.id_tester, t.t_first_name, t.t_surname, t.t_lastname FROM tester t
-RIGHT JOIN bug b ON t.id_tester = b.id_tester
-GROUP BY t.id_tester
-ORDER BY COUNT(b.id_bug) DESC
-LIMIT 1;
-
---е. Разработчик, у которого нет неисправленных багов
+-- е. Разработчик, у которого нет неисправленных багов
 
 SELECT d.* FROM developer d
 WHERE d.id_developer NOT IN (
@@ -83,8 +73,7 @@ LEFT JOIN (
 WHERE unresolved_bugs.id_developer IS NULL;
 
 
---ж. Тестировщик, работавший со всеми проектами
---делимым является множество всех тестировщиков, а делителем — те тестировщики, которые работали со всеми проектами
+-- ж. Тестировщик, работавший со всеми проектами
 SELECT t.* FROM tester t
 WHERE NOT EXISTS (
     SELECT 1 FROM project p

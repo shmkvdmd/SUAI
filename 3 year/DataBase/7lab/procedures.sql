@@ -1,4 +1,4 @@
---Хранимая процедура с добавлением нового тестировщика.
+-- Хранимая процедура с добавлением нового тестировщика.
 DELIMITER //
 
 CREATE PROCEDURE InsertTester(
@@ -12,11 +12,11 @@ BEGIN
 END //
 
 DELIMITER ;
---Вызов процедуры
+-- Вызов процедуры
 CALL InsertTester('Иван', 'Иванов','Иванович');
 
 
---Процедура с очисткой справочников
+-- Процедура с очисткой справочников
 DELIMITER //
 
 CREATE PROCEDURE DeleteProjectBugWithCleanup(IN projectID INT, IN bugID INT)
@@ -48,7 +48,7 @@ END //
 
 DELIMITER ;
 
---Вызов процедуры
+-- Вызов процедуры
 CALL DeleteTester(5);
 --Хранимая процедура с возвратом значения
 DELIMITER //
