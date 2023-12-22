@@ -20,30 +20,18 @@ AND started <= ALL (
 	WHERE crit_name = 'Критический'
 );
 -- д. Тестировщик, с самым большим количеством добавленных багов
-SELECT id_tester, t_first_name, t_surname, t_lastname
-FROM tester
-WHERE id_tester = (
-    SELECT id_tester
-    FROM bug
-    GROUP BY id_tester
-    ORDER BY COUNT(id_bug) DESC
-    LIMIT 1
-);
 
 SELECT t.id_tester, t.t_first_name, t.t_surname, t.t_lastname FROM tester t
-WHERE NOT EXISTS (
-    SELECT 1 FROM bug b1
-    WHERE b1.id_tester = t.id_tester
-) OR NOT EXISTS (
-    SELECT 1 FROM bug b2
-    WHERE b2.id_tester = t.id_tester
-    GROUP BY b2.id_tester
-    HAVING COUNT(b2.id_bug) < (
-        SELECT COUNT(b3.id_bug) FROM bug b3
-        WHERE b3.id_tester = t.id_tester
-    )
-)
-LIMIT 1;
+WHERE t.id_tester IN (
+	SELECT id_tester FROM bug
+    GROUP BY id_tester
+    HAVING COUNT(id_bug) = (
+	SELECT MAX(bug_count) FROM (
+		SELECT COUNT(id_bug) AS bug_count FROM bug
+        GROUP BY id_tester
+        ) AS bug_counts
+	)
+);
 
 
 -- е. Разработчик, у которого нет неисправленных багов
