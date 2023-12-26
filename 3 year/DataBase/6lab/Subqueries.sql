@@ -32,6 +32,18 @@ WHERE t.id_tester IN (
         ) AS bug_counts
 	)
 );
+SELECT t.id_tester, t.t_first_name, t.t_surname, t.t_lastname
+FROM tester t
+JOIN bug b ON t.id_tester = b.id_tester
+GROUP BY t.id_tester
+HAVING COUNT(b.id_bug) = (
+    SELECT MAX(bug_count)
+    FROM (
+        SELECT COUNT(id_bug) AS bug_count
+        FROM bug
+        GROUP BY id_tester
+    ) AS bug_counts
+);
 
 
 -- е. Разработчик, у которого нет неисправленных багов
