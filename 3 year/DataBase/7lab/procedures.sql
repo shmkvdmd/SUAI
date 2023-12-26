@@ -15,6 +15,38 @@ DELIMITER ;
 -- Вызов процедуры
 CALL InsertTester('Иван', 'Иванов','Иванович');
 
+DELIMITER //
+CREATE PROCEDURE InsertWithLookup(
+    IN p_bug_name VARCHAR(50),
+    IN p_is_fixed BOOLEAN,
+    IN p_started DATE,
+    IN p_ended DATE,
+    IN p_tester_name VARCHAR(30),
+    IN p_crit_name VARCHAR(50)
+)
+BEGIN
+    DECLARE v_tester_id INT;
+    DECLARE v_crit_id INT;
+
+    -- Проверяем и добавляем данные в таблицу tester
+    INSERT INTO tester (t_first_name, t_surname, t_lastname)
+    VALUES (SUBSTRING_INDEX(p_tester_name, ' ', 1), 
+            SUBSTRING_INDEX(SUBSTRING_INDEX(p_tester_name, ' ', -2), ' ', 1), 
+            SUBSTRING_INDEX(p_tester_name, ' ', -1))
+    ON DUPLICATE KEY UPDATE id_tester = LAST_INSERT_ID(id_tester);
+
+    -- Получаем или добавляем данные в таблицу CritLevel
+    SELECT id_crit INTO v_crit_id FROM CritLevel WHERE crit_name = p_crit_name;
+    IF v_crit_id IS NULL THEN
+        INSERT INTO CritLevel (crit_name) VALUES (p_crit_name);
+        SET v_crit_id = LAST_INSERT_ID();
+    END IF;
+
+    -- Вставляем данные в таблицу bug
+    INSERT INTO bug (bug_name, is_fixed, started, ended, id_tester, id_crit)
+    VALUES (p_bug_name, p_is_fixed, p_started, p_ended, LAST_INSERT_ID(), v_crit_id);
+END //
+DELIMITER ;
 
 -- Процедура с очисткой справочников
 DELIMITER //
