@@ -1,0 +1,43 @@
+use bug_tracking
+
+db.createCollection("projects")
+db.createCollection("features")
+db.createCollection("bugs")
+db.createCollection("testers")
+db.createCollection("developers")
+db.createCollection("tasks")
+db.createCollection("project
+
+db.testers.insertMany([
+	{"_id": 1, "name": "Имя1", "surname": "Фамилия1", "patronym": "Отчество1"},
+	{"_id": 2, "name": "Имя2", "surname": "Фамилия2", "patronym": "Отчество2"},
+	{"_id": 3, "name": "Имя3", "surname": "Фамилия3", "patronym": "Отчество3"}
+	])
+	
+db.developers.insertMany([
+	{"_id": 1, "name": "Разработчик1", "surname": "Фамилия1", "patronym": "Отчество1"},
+	{"_id": 2, "name": "Разработчик2", "surname": "Фамилия2", "patronym": "Отчество2"},
+	{"_id": 3, "name": "Разработчик3", "surname": "Фамилия3", "patronym": "Отчество3"}
+	])
+	
+db.projects.insertMany([
+	{"_id": 1, "workers": { "tester_id": 1, "developer_id": 2}, "name": "project Первый проект"},
+	{"_id": 2, "workers": {"tester_id": 2, "developer_id": 1}, "name": "project Второй проект"}
+	])
+	
+db.features.insertMany([
+	{"_id": 1, "name": "Функция 1", "project_id": 1, "description": "Описание1"},
+	{"_id": 2, "name": "Функция 2", "project_id": 2, "description": "Описание2"},
+	{"_id": 3, "name": "Функция 3", "project_id": 2, "description": "Описание3"}
+	])
+	
+db.bugs.insertMany([
+  { "_id": 1, "name": "Утечка памяти", "level": "Критичный", "status": "Открыт", "feature_id": 1},
+  { "_id": 2, "name": "Неверные размеры контейнеров", "level": "Важный", "status": "Закрыт", "feature_id": 2},
+  { "_id": 3, "name": "Проблема с оптимизацией", "level": "Неважный", "status": "Открыт", "feature_id": 1}
+])
+
+db.tasks.insertMany([
+	{ "_id": 1, "type": "Функция", "status": "Реализация функции", "developer_id": 1},
+	{ "_id": 2, "type": "Баг", "status": "Исправление бага", "developer_id": 2}
+	])
