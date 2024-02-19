@@ -32,18 +32,19 @@ db.projects.insertMany([
 	
 db.bugs.insertMany([
 	{ "_id": 1, "name": "Неверный размер выделенной памяти", "is_fixed": false, "started": new Date('2024-02-18'), "ended": null, "tester_id": 1, "crit_level": {"_id": 1, "level": "Критический", "description": "Критический баг роняет приложение"}},
-	{ "_id": 2, "name": "Неверная кодировка", "is_fixed": true, "started": new Date('2024-02-15'), "ended": new Date('2024-02-16'), "tester_id": 2, "crit_level": {"_id": 2,"level": "Незначительный", "description": "Неверное отображение символов"}}
+	{ "_id": 2, "name": "Неверная кодировка", "is_fixed": true, "started": new Date('2024-02-15'), "ended": new Date('2024-02-16'), "tester_id": 1, "crit_level": {"_id": 2,"level": "Незначительный", "description": "Неверное отображение символов"}}
 	])
 	
 db.features.insertMany([
-	{"_id": 1, "name": "Функция 1", "description": "Описание1"},
-	{"_id": 2, "name": "Функция 2", "description": "Описание2"},
-	{"_id": 3, "name": "Функция 3", "description": "Описание3"}
+	{"_id": 1, "name": "Функция 1", "description": "Описание1", "is_completed": true},
+	{"_id": 2, "name": "Функция 2", "description": "Описание2", "is_completed": true},
+	{"_id": 3, "name": "Функция 3", "description": "Описание3", "is_completed": true}
 	])
 	
 db.project_features.insertMany([
 	{"_id_project": 1, "_id_feature": 1},
 	{"_id_project": 1, "_id_feature": 2},
+	{"_id_project": 2, "_id_feature": 2},
 	{"_id_project": 2, "_id_feature": 3}
 	])
 
