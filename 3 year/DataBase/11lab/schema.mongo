@@ -5,8 +5,13 @@ db.createCollection("features")
 db.createCollection("bugs")
 db.createCollection("testers")
 db.createCollection("developers")
-db.createCollection("tasks")
-db.createCollection("project
+db.createCollection("project_features")
+db.createCollection("developer_features")
+db.createCollection("project_developer")
+db.createCollection("bug_developer")
+db.createCollection("project_bug")
+db.createCollection("project_tester")
+
 
 db.testers.insertMany([
 	{"_id": 1, "name": "Имя1", "surname": "Фамилия1", "patronym": "Отчество1"},
@@ -21,23 +26,51 @@ db.developers.insertMany([
 	])
 	
 db.projects.insertMany([
-	{"_id": 1, "workers": { "tester_id": 1, "developer_id": 2}, "name": "project Первый проект"},
-	{"_id": 2, "workers": {"tester_id": 2, "developer_id": 1}, "name": "project Второй проект"}
-	])
-	
-db.features.insertMany([
-	{"_id": 1, "name": "Функция 1", "project_id": 1, "description": "Описание1"},
-	{"_id": 2, "name": "Функция 2", "project_id": 2, "description": "Описание2"},
-	{"_id": 3, "name": "Функция 3", "project_id": 2, "description": "Описание3"}
+	{"_id": 1, "name": "Первый проект"},
+	{"_id": 2,"name": "Второй проект"}
 	])
 	
 db.bugs.insertMany([
-  { "_id": 1, "name": "Утечка памяти", "level": "Критичный", "status": "Открыт", "feature_id": 1},
-  { "_id": 2, "name": "Неверные размеры контейнеров", "level": "Важный", "status": "Закрыт", "feature_id": 2},
-  { "_id": 3, "name": "Проблема с оптимизацией", "level": "Неважный", "status": "Открыт", "feature_id": 1}
-])
+	{ "_id": 1, "name": "Неверный размер выделенной памяти", "is_fixed": false, "started": new Date('2024-02-18'), "ended": null, "tester_id": 1, "crit_level": {"_id": 1, "level": "Критический", "description": "Критический баг роняет приложение"}},
+	{ "_id": 2, "name": "Неверная кодировка", "is_fixed": true, "started": new Date('2024-02-15'), "ended": new Date('2024-02-16'), "tester_id": 2, "crit_level": {"_id": 2,"level": "Незначительный", "description": "Неверное отображение символов"}}
+	])
+	
+db.features.insertMany([
+	{"_id": 1, "name": "Функция 1", "description": "Описание1"},
+	{"_id": 2, "name": "Функция 2", "description": "Описание2"},
+	{"_id": 3, "name": "Функция 3", "description": "Описание3"}
+	])
+	
+db.project_features.insertMany([
+	{"_id_project": 1, "_id_feature": 1},
+	{"_id_project": 1, "_id_feature": 2},
+	{"_id_project": 2, "_id_feature": 3}
+	])
 
-db.tasks.insertMany([
-	{ "_id": 1, "type": "Функция", "status": "Реализация функции", "developer_id": 1},
-	{ "_id": 2, "type": "Баг", "status": "Исправление бага", "developer_id": 2}
+db.developer_features.insertMany([
+	{"_id_developer": 1, "_id_feature": 1},
+	{"_id_developer": 2, "_id_feature": 3},
+	{"_id_developer": 3, "_id_feature": 2}
+	])
+
+db.bug_developer.insertMany([
+	{"_id_bug": 1, "_id_developer": 1},
+	{"_id_bug": 2, "_id_developer": 2}
+	])
+	
+db.project_developer.insertMany([
+	{"_id_project": 1, "_id_developer": 1},
+	{"_id_project": 1, "_id_developer": 2},
+	{"_id_project": 2, "_id_developer": 3}
+	])
+	
+db.project_bug.insertMany([
+	{"_id_project": 1, "_id_bug": 1},
+	{"_id_project": 2, "_id_bug": 2}
+	])
+	
+db.project_tester.insertMany([
+	{"_id_project": 1, "_id_tester": 1},
+	{"_id_project": 1, "_id_tester": 2},
+	{"_id_project": 2, "_id_tester": 3}
 	])
