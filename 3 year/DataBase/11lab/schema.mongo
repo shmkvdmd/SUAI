@@ -1,77 +1,27 @@
 use bug_tracking
 
-db.createCollection("projects")
-db.createCollection("features")
-db.createCollection("bugs")
-db.createCollection("testers")
-db.createCollection("developers")
-db.createCollection("project_features")
-db.createCollection("developer_features")
-db.createCollection("project_developer")
-db.createCollection("bug_developer")
-db.createCollection("project_bug")
-db.createCollection("project_tester")
+db.createCollection("project")
+db.createCollection("tasks")
+db.createCollection("workers")
 
 
-db.testers.insertMany([
-	{"_id": 1, "name": "Имя1", "surname": "Фамилия1", "patronym": "Отчество1"},
-	{"_id": 2, "name": "Имя2", "surname": "Фамилия2", "patronym": "Отчество2"},
-	{"_id": 3, "name": "Имя3", "surname": "Фамилия3", "patronym": "Отчество3"}
+db.workers.insertMany([
+	{"name": "Имя1", "surname": "Фамилия1", "patronym": "Отчество1", "status": "Тестировщик"},
+	{"name": "Имя2", "surname": "Фамилия2", "patronym": "Отчество2", "status": "Тестировщик"},
+	{"name": "Имя3", "surname": "Фамилия3", "patronym": "Отчество3", "status": "Тестировщик"},
+	{"name": "Имя4", "surname": "Фамилия4", "patronym": "Отчество4", "status": "Разработчик"},
+	{"name": "Имя5", "surname": "Фамилия5", "patronym": "Отчество5", "status": "Разработчик"},
+	{"name": "Имя6", "surname": "Фамилия6", "patronym": "Отчество6", "status": "Разработчик"}
 	])
 	
-db.developers.insertMany([
-	{"_id": 1, "name": "Разработчик1", "surname": "Фамилия1", "patronym": "Отчество1"},
-	{"_id": 2, "name": "Разработчик2", "surname": "Фамилия2", "patronym": "Отчество2"},
-	{"_id": 3, "name": "Разработчик3", "surname": "Фамилия3", "patronym": "Отчество3"}
+db.project.insertMany([
+	{"name": "Первый проект", "workers": [ObjectId('65d48c7022658c08e9ccb57d'),ObjectId('65d48c7022658c08e9ccb581')]},
+	{"name": "Второй проект", "workers": [ObjectId('65d48c7022658c08e9ccb57e'),ObjectId('65d48c7022658c08e9ccb57f'), ObjectId('65d48c7022658c08e9ccb582')]}
 	])
 	
-db.projects.insertMany([
-	{"_id": 1, "name": "Первый проект"},
-	{"_id": 2,"name": "Второй проект"}
-	])
-	
-db.bugs.insertMany([
-	{ "_id": 1, "name": "Неверный размер выделенной памяти", "is_fixed": false, "started": new Date('2024-02-18'), "ended": null, "tester_id": 1, "crit_level": {"_id": 1, "level": "Критический", "description": "Критический баг роняет приложение"}},
-	{ "_id": 2, "name": "Неверная кодировка", "is_fixed": true, "started": new Date('2024-02-15'), "ended": new Date('2024-02-16'), "tester_id": 1, "crit_level": {"_id": 2,"level": "Незначительный", "description": "Неверное отображение символов"}}
-	])
-	
-db.features.insertMany([
-	{"_id": 1, "name": "Функция 1", "description": "Описание1", "is_completed": true},
-	{"_id": 2, "name": "Функция 2", "description": "Описание2", "is_completed": true},
-	{"_id": 3, "name": "Функция 3", "description": "Описание3", "is_completed": true}
-	])
-	
-db.project_features.insertMany([
-	{"_id_project": 1, "_id_feature": 1},
-	{"_id_project": 1, "_id_feature": 2},
-	{"_id_project": 2, "_id_feature": 2},
-	{"_id_project": 2, "_id_feature": 3}
-	])
-
-db.developer_features.insertMany([
-	{"_id_developer": 1, "_id_feature": 1},
-	{"_id_developer": 2, "_id_feature": 3},
-	{"_id_developer": 3, "_id_feature": 2}
-	])
-
-db.bug_developer.insertMany([
-	{"_id_bug": 1, "_id_developer": 1},
-	{"_id_bug": 2, "_id_developer": 2}
-	])
-	
-db.project_developer.insertMany([
-	{"_id_project": 1, "_id_developer": 1},
-	{"_id_project": 1, "_id_developer": 2},
-	{"_id_project": 2, "_id_developer": 3}
-	])
-	
-db.project_bug.insertMany([
-	{"_id_project": 1, "_id_bug": 1},
-	{"_id_project": 2, "_id_bug": 2}
-	])
-	
-db.project_tester.insertMany([
-	{"_id_project": 1, "_id_tester": 1},
-	{"_id_project": 1, "_id_tester": 2},
-	{"_id_project": 2, "_id_tester": 3}
+db.tasks.insertMany([
+	{"name": "Неверный размер выделенной памяти", "started": new Date('2024-02-18'), "ended": null, "is_completed": false,
+	"status":"Баг", "crit_level":"Критический"},
+	{"name": "Смена кодировки", "started": new Date('2024-02-18'), "ended": new Date('2024-02-19'), "is_completed": true,
+	"status":"Функция"}
 	])
