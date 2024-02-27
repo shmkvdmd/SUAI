@@ -35,6 +35,10 @@ h1 + p {
     border-radius: 20px;
 }
 
+#links{
+	text-align: center;
+}
+
 #table {
   margin-top: 20px;
 }
