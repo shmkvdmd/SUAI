@@ -47,8 +47,7 @@ h1 + p {
   padding: 5px;
 }
 
-#list ol,
-#list ul {
+#list ol{
   margin-left: 20px;
 }
 
