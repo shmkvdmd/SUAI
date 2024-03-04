@@ -5,6 +5,7 @@
 	<meta name="author" content="Демид Шумков">
 	<meta name="description" content="Сайт о роботах игрушках">
 	<title>HTML5</title>
+	<link rel="stylesheet" href="styles.css">
 	<style>
         header {
             background-color: Black;
@@ -58,7 +59,7 @@
 	<section>
 		<article>
 			<h2>Набор картинок</h2>
-			<div style="display: flex;">
+			<div style="display: flex;" class="transform-image">
 				<img src="img1.png" alt="Изображение 1" width="320" height="240">
 				<img src="img2.png" alt="Изображение 2" width="320" height="240">
 				<img src="img3.png" alt="Изображение 3" width="320" height="240">
@@ -78,15 +79,8 @@
 		</article>
 	</section>
 	<hr>
-	<aside>
-		<h2>Аудио</h2>
-		<audio controls>
-			<source src="Animal Джаz - Три Полоски.mp3" type="audio/mpeg">
-		</audio>
-	</aside>
-	<hr>
-	<footer>
-	<p>2024 Роботы игрушки. Все персонажи и описываемые события являются вымышленными. Любое совпадение с реальными людьми и событиями - случайность.</p>
+	<footer class="gradient">
+	<p>2024 Роботы игрушки. </p>
 	<address>
 		Имя: Шумков Демид<br>
 		Email: secretinformation@mail.ru<br>
