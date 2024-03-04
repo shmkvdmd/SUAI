@@ -15,13 +15,19 @@ db.workers.insertMany([
 	])
 	
 db.project.insertMany([
-	{"name": "Первый проект", "workers": [ObjectId('65d48c7022658c08e9ccb57d'),ObjectId('65d48c7022658c08e9ccb581')]},
-	{"name": "Второй проект", "workers": [ObjectId('65d48c7022658c08e9ccb57e'),ObjectId('65d48c7022658c08e9ccb57f'), ObjectId('65d48c7022658c08e9ccb582')]}
+	{"name": "Первый проект", "workers": [ObjectId('65e5f22b8054c7ce5e6a424f'),ObjectId('65e5f22b8054c7ce5e6a4250'), ObjectId('65e5f22b8054c7ce5e6a4252')],
+	"tasks": [ObjectId('65e5ee418054c7ce5e6a424c'),ObjectId('65e5ee418054c7ce5e6a4249')]},
+	{"name": "Второй проект", "workers": [ObjectId('65e5f22b8054c7ce5e6a4251'),ObjectId('65e5f22b8054c7ce5e6a4253'), ObjectId('65e5f22b8054c7ce5e6a4254')],
+	"tasks": [ObjectId('65e5ee418054c7ce5e6a424c'),ObjectId('65e5ee418054c7ce5e6a424a'),ObjectId('65e5ee418054c7ce5e6a424b')] }
 	])
 	
 db.tasks.insertMany([
 	{"name": "Неверный размер выделенной памяти", "started": new Date('2024-02-18'), "ended": null, "is_completed": false,
-	"status":"Баг", "crit_level":"Критический"},
-	{"name": "Смена кодировки", "started": new Date('2024-02-18'), "ended": new Date('2024-02-19'), "is_completed": true,
-	"status":"Функция"}
+	"status":"Баг", "tester":ObjectId('65e5f22b8054c7ce5e6a424f'),"crit_level":"Критический"},
+	{"name": "Зацикливание при добавлении элемента в массив", "started": new Date('2024-02-13'), "ended": new Date('2024-02-15'), "is_completed": true,
+	"status":"Баг", "tester":ObjectId('65e5f22b8054c7ce5e6a4250'), "crit_level":"Критический"},
+	{"name": "Смена кодировки", "started": new Date('2024-02-18'), "ended": null, "is_completed": false,
+	"status":"Функция", "developer":ObjectId('65e5f22b8054c7ce5e6a4253'),},
+	{"name": "Макрос времени выполнения", "started": new Date('2024-02-18'), "ended": new Date('2024-02-19'), "is_completed": true,
+	"status":"Функция", "developer":ObjectId('65e5f22b8054c7ce5e6a4254'),}
 	])
