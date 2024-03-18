@@ -1,0 +1,160 @@
+// Примеры удаления и обновления
+
+// Вложенне удаление
+db.project.updateOne(
+   { "name": "Второй проект" },
+   { $pull: { "tasks": { "name": "Зацикливание при добавлении элемента в массив" } } }
+)
+
+//верхнее удаление
+db.project.deleteOne({ "name": "Первый проект" })
+
+//обновление
+db.project.updateOne(
+   { "name": "Первый проект", "tasks.name": "Неверный размер выделенной памяти" },
+   { $set: { "tasks.$.status": "Фича" } }
+)
+
+//обновление
+db.project.updateOne({"name":"Второй проект"},
+		{$set:{"name":"Первый проект"}})
+
+// Баги, в названии которых содержится слово «размер», но оно не последнее
+db.tasks.find({$and:[{"status":"Баг", "name":/размер/},{"name":{"$not":/размер$/}}]})
+
+// Функции(фичи), относящаяся к 2 различным проектам	
+db.project.aggregate([
+  {$unwind: "$tasks"},
+  {$group: 
+  {	_id: "$tasks", 
+	count: { $sum: 1 }}
+  },
+  {$match: {count: { $gte: 2 }}}
+])
+
+db.tasks.aggregate([
+  { $match: { status: "Функция" } },
+  {$lookup: {
+      from: "project",
+      localField: "_id",
+      foreignField: "tasks",
+      as: "project_info"
+    }
+  },
+  {
+    $project: {
+      "_id": 1,
+      "name": 1,
+      "num_projects": { $size: "$project_info" }
+    }
+  },
+  {
+    $match: { "num_projects": { $gte: 2 } }
+  }
+])
+
+// Критический баг, который добавили последним
+
+db.tasks.aggregate([
+	{
+    $match: { "crit_level": "Критический", "status": "Баг" }
+	},
+	{$tasks:{
+		_id:null,
+		max_start: {$max: "$started"},
+		"task_data": {"$push": "$$ROOT" }
+		}
+	},
+{$unwind:"$task_data"},
+{
+$tasks:{"_id":"task_data._id","task_nm":"$task_data.task_name","num":"$task_data.num_proj",max_start:1,
+"is_eq":{$eq:["$task_data.started","$max_start"]}}
+},
+{$match:{"is_eq":true}}
+])
+
+// Тестировщик, с самым большим количеством добавленных багов
+
+db.workers.aggregate([
+  {
+    $match: { "status": "Тестировщик" }
+  },
+  {
+    $lookup: {
+      from: "tasks", // Связываем с коллекцией tasks
+      localField: "_id",
+      foreignField: "tester",
+      as: "test_tasks" // Результат помещаем в поле test_tasks
+    }
+  },
+  {
+    $project: {
+      "_id": 1,
+      "name": 1,
+      "surname": 1,
+      "patronym": 1,
+      "num_task": { $size: "$test_tasks" }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      max_task_c: { $max: "$num_task" }, 
+      "task_data": { "$push": "$$ROOT" }
+    }
+  },
+  {
+    $unwind: "$task_data"
+  },
+  {
+    $project: {
+      "_id": "$task_data._id",
+      "worker_name": "$task_data.name",
+      "worker_surname": "$task_data.surname",
+      "worker_patronym": "$task_data.patronym",
+      "num_task1": "$task_data.num_task",
+      "max_task_c": 1,
+      "is_eq": { $eq: ["$task_data.num_task", "$max_task_c"] }
+    }
+  },
+  {
+    $match: { "is_eq": true }
+  }
+])
+
+// Разработчик, у которого нет незавершенных задач(реализация фичи или исправление бага)
+
+db.workers.aggregate([
+  {
+    $match: { "status": "Разработчик" }
+  },
+  {
+    $lookup: {
+      from: "tasks",
+      localField: "_id",
+      foreignField: "developer",
+      as: "unended_tasks"
+    }
+  },
+  {
+    $project: {
+      "_id": 1,
+      "surname": 1,
+      "name": 1,
+      "patronym": 1,
+      "unended_tasks": {
+        $filter: {
+          input: "$unended_tasks",
+          as: "tsk",
+          cond: { $eq: ["$$tsk.is_completed", false] }
+        }
+      }
+    }
+  },
+  {
+    $addFields: { "cnt_not_done": { $size: "$unended_tasks" } }
+  },
+  {
+    $match: { "cnt_not_done": 0 }
+  }
+])
