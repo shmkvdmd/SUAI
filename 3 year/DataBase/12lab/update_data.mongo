@@ -23,14 +23,6 @@ db.project.updateOne({"name":"Второй проект"},
 db.tasks.find({$and:[{"status":"Баг", "name":/размер/},{"name":{"$not":/размер$/}}]})
 
 // Функции(фичи), относящаяся к 2 различным проектам	
-db.project.aggregate([
-  {$unwind: "$tasks"},
-  {$group: 
-  {	_id: "$tasks", 
-	count: { $sum: 1 }}
-  },
-  {$match: {count: { $gte: 2 }}}
-])
 
 db.tasks.aggregate([
   { $match: { status: "Функция" } },
