@@ -31,12 +31,12 @@
             var cols = parseInt(document.getElementById("cols").value);
 
             var matrixInput = document.getElementById("matrixInput");
-            matrixInput.innerHTML = ""; // Очищаем содержимое, чтобы избежать дублирования
+            matrixInput.innerHTML = "";
 
             for (var i = 0; i < rows; i++) {
                 for (var j = 0; j < cols; j++) {
                     var inputId = "matrixInput_" + i + "_" + j;
-                    matrixInput.innerHTML += `<input type="number" id="${inputId}" min="1" max="20"> `;
+                    matrixInput.innerHTML += `<input type="number" id="${inputId}"> `;
                 }
                 matrixInput.innerHTML += "<br>";
             }
@@ -61,7 +61,7 @@
                 }
             }
 
-            originalMatrix = matrix.slice(); // Сохраняем копию оригинальной матрицы
+            originalMatrix = matrix.slice();
 
             document.getElementById("result").innerHTML = "Матрица после замены:<br>" + matrixToString(matrix);
         }
