@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<head>
+    <title>Матрица</title>
+</head>
+<body>
+    <h2>Введите параметры матрицы и значения элементов:</h2>
+    <label for="rows">Количество строк:</label>
+    <input type="number" id="rows" min="1"><br><br>
+    
+    <label for="cols">Количество столбцов:</label>
+    <input type="number" id="cols" min="1"><br><br>
+
+    <div id="matrixInput"></div><br><br>
+    
+    <label for="target">Число, от которого будут замены:</label>
+    <input type="number" id="target"><br><br>
+    
+    <button onclick="createMatrix()">Создать матрицу</button><br><br>
+    
+    <button onclick="printMatrix()">Вывести матрицу</button>
+    <button onclick="replaceElements()">Заменить значения</button><br><br>
+    
+    <h2>Результат:</h2>
+    <div id="result"></div>
+
+    <script>
+        var originalMatrix = null;
+
+        function createMatrix() {
+            var rows = parseInt(document.getElementById("rows").value);
+            var cols = parseInt(document.getElementById("cols").value);
+
+            var matrixInput = document.getElementById("matrixInput");
+            matrixInput.innerHTML = ""; // Очищаем содержимое, чтобы избежать дублирования
+
+            for (var i = 0; i < rows; i++) {
+                for (var j = 0; j < cols; j++) {
+                    var inputId = "matrixInput_" + i + "_" + j;
+                    matrixInput.innerHTML += `<input type="number" id="${inputId}" min="1" max="20"> `;
+                }
+                matrixInput.innerHTML += "<br>";
+            }
+        }
+
+        function replaceElements() {
+            var rows = parseInt(document.getElementById("rows").value);
+            var cols = parseInt(document.getElementById("cols").value);
+            var target = parseInt(document.getElementById("target").value);
+
+            var matrix = [];
+
+            for (var i = 0; i < rows; i++) {
+                matrix.push([]);
+                for (var j = 0; j < cols; j++) {
+                    var inputId = "matrixInput_" + i + "_" + j;
+                    var value = parseInt(document.getElementById(inputId).value);
+                    if (value !== target) {
+                        value = 0;
+                    }
+                    matrix[i].push(value);
+                }
+            }
+
+            originalMatrix = matrix.slice(); // Сохраняем копию оригинальной матрицы
+
+            document.getElementById("result").innerHTML = "Матрица после замены:<br>" + matrixToString(matrix);
+        }
+
+        function printMatrix() {
+            var rows = parseInt(document.getElementById("rows").value);
+            var cols = parseInt(document.getElementById("cols").value);
+
+            var matrix = [];
+
+            for (var i = 0; i < rows; i++) {
+                matrix.push([]);
+                for (var j = 0; j < cols; j++) {
+                    var inputId = "matrixInput_" + i + "_" + j;
+                    var value = parseInt(document.getElementById(inputId).value);
+                    matrix[i].push(value);
+                }
+            }
+
+            document.getElementById("result").innerHTML = "Матрица:<br>" + matrixToString(matrix);
+        }
+
+        function matrixToString(matrix) {
+            var output = "";
+            for (var i = 0; i < matrix.length; i++) {
+                output += matrix[i].join('\t') + '<br>';
+            }
+            return output;
+        }
+    </script>
+</body>
+</html>
