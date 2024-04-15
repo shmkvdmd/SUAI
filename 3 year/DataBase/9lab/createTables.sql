@@ -1,21 +1,17 @@
+CREATE TABLE worker (
+    worker_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    patronym VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE tester (
 	tester_id SERIAL PRIMARY KEY,
-	t_first_name VARCHAR(50) NOT NULL,
-	t_surname VARCHAR(50) NOT NULL,
-	t_patronym VARCHAR(50) NOT NULL
-);
+) INHERITS (worker);
 
 CREATE TABLE developer (
 	developer_id SERIAL PRIMARY KEY,
-	d_first_name VARCHAR(50) NOT NULL,
-	d_surname VARCHAR(50) NOT NULL,
-	d_patronym VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE crit_level (
-	crit_id SERIAL PRIMARY KEY,
-	crit_name VARCHAR(50) NOT NULL
-);
+) INHERITS (worker);
 
 CREATE TABLE project (
 	project_id SERIAL PRIMARY KEY,
@@ -26,6 +22,7 @@ CREATE TABLE features (
 	feature_id SERIAL PRIMARY KEY,
 	feature_name VARCHAR(100) NOT NULL
 );
+CREATE TYPE bug_crit AS ENUM ('Некритичный', 'Критичный', 'Очень критичный');
 
 CREATE TABLE bugs (
 	bug_id SERIAL PRIMARY KEY,
@@ -34,9 +31,8 @@ CREATE TABLE bugs (
 	started DATE, NOT NULL,
 	ended DATE,
 	tester_id INT NOT NULL,
-	crit_id INT NOT NULL,
-	FOREIGN KEY (tester_id) REFERENCES tester(tester_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY (crit_id) REFERENCES crit_level(crit_id) ON DELETE RESTRICT ON UPDATE CASCADE
+	crit_level bug_crit NOT NULL,
+	FOREIGN KEY (tester_id) REFERENCES tester(tester_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE project_bug (
