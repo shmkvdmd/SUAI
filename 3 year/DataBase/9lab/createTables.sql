@@ -28,12 +28,12 @@ CREATE TABLE features (
 );
 
 CREATE TABLE bugs (
-    bug_id SERIAL PRIMARY KEY,
-    bug_name VARCHAR(100) NOT NULL,
+	bug_id SERIAL PRIMARY KEY,
+	bug_name VARCHAR(100) NOT NULL,
 	is_fixed BOOL NOT NULL,
 	started DATE, NOT NULL,
 	ended DATE,
-    tester_id INT NOT NULL,
+	tester_id INT NOT NULL,
 	crit_id INT NOT NULL,
 	FOREIGN KEY (tester_id) REFERENCES tester(tester_id) ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY (crit_id) REFERENCES crit_level(crit_id) ON DELETE RESTRICT ON UPDATE CASCADE
