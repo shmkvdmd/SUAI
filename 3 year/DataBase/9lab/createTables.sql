@@ -5,12 +5,18 @@ CREATE TABLE worker (
     patronym VARCHAR(50) NOT NULL
 );
 
+CREATE TYPE date_task AS (
+	is_fixed BOOL,
+	started DATE,
+	ended DATE
+);
+
 CREATE TABLE tester (
-	tester_id SERIAL PRIMARY KEY
+	PRIMARY KEY (worker_id)
 ) INHERITS (worker);
 
 CREATE TABLE developer (
-	developer_id SERIAL PRIMARY KEY
+	PRIMARY KEY (worker_id)
 ) INHERITS (worker);
 
 CREATE TABLE project (
@@ -20,6 +26,7 @@ CREATE TABLE project (
 
 CREATE TABLE features (
 	feature_id SERIAL PRIMARY KEY,
+	feature_data date_task,
 	feature_name VARCHAR(100) NOT NULL
 );
 CREATE TYPE bug_crit AS ENUM ('Некритичный', 'Критичный', 'Очень критичный');
@@ -27,12 +34,10 @@ CREATE TYPE bug_crit AS ENUM ('Некритичный', 'Критичный', '�
 CREATE TABLE bugs (
 	bug_id SERIAL PRIMARY KEY,
 	bug_name VARCHAR(100) NOT NULL,
-	is_fixed BOOL NOT NULL,
-	started DATE NOT NULL,
-	ended DATE,
+	bug_data date_task,
 	tester_id INT NOT NULL,
 	crit_level bug_crit NOT NULL,
-	FOREIGN KEY (tester_id) REFERENCES tester(tester_id) ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY (tester_id) REFERENCES tester(worker_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE project_bug (
@@ -47,7 +52,7 @@ CREATE TABLE bug_developer (
 	bug_id INT,
 	developer_id INT,
 	PRIMARY KEY (bug_id, developer_id),
-	FOREIGN KEY (developer_id) REFERENCES developer(developer_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY (developer_id) REFERENCES developer(worker_id) ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY (bug_id) REFERENCES bugs(bug_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -56,7 +61,7 @@ CREATE TABLE project_developer (
 	developer_id INT,
 	PRIMARY KEY (project_id, developer_id),
 	FOREIGN KEY (project_id) REFERENCES project(project_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY (developer_id) REFERENCES developer(developer_id) ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY (developer_id) REFERENCES developer(worker_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE project_features (
@@ -71,6 +76,6 @@ CREATE TABLE developer_features (
 	developer_id INT,
 	feature_id INT,
 	PRIMARY KEY (developer_id, feature_id),
-	FOREIGN KEY (developer_id) REFERENCES developer(developer_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY (developer_id) REFERENCES developer(worker_id) ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY (feature_id) REFERENCES features(feature_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
