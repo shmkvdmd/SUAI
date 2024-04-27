@@ -38,6 +38,28 @@
 		<div id="table">
 		<select id="manufacturerSelect" onchange="loadModels()">
 			<option value="">Выберите производителя</option>
+			<?php
+
+        $servername = "localhost"; 
+        $username = "root"; 
+        $password = "";
+        $dbname = "test"; 
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+		
+        $sql = "SELECT name FROM manufacturers";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<option value='" . $row["name"] . "'>" . $row["name"] . "</option>";
+            }
+        }
+        ?>
 		</select>
 		<table border="1" style="border: 2px solid red;">
         <caption>Характеристики роботов-игрушек</caption>
@@ -59,18 +81,15 @@
                 <td colspan="4">Ассортимент будет пополняться</td>
             </tr>
         </tfoot>
-        <tbody>
+        <tbody id="toyTableBody">
             <?php
-            // Подключение к базе данных
-            $servername = "localhost"; // Имя сервера базы данных
-            $username = "root"; // Имя пользователя базы данных
-            $password = ""; // Пароль базы данных
-            $dbname = "test"; // Имя базы данных
+            $servername = "localhost";
+            $username = "root"; 
+            $password = ""; 
+            $dbname = "test";
 
-            // Создание подключения
             $conn = new mysqli($servername, $username, $password, $dbname);
-
-            // Проверка подключения
+			
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
@@ -141,6 +160,19 @@
     <script src="showTime.js"></script>
     <script src="changeColor.js"></script>
     <script src="changeSize.js"></script>
+	<script>
+    function loadModels() {
+        var manufacturer = document.getElementById("manufacturerSelect").value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("toyTableBody").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "load_models.php?manufacturer=" + manufacturer, true);
+        xhttp.send();
+    }
+</script>
 
 </body>
 </html>

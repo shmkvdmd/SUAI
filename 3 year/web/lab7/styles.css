@@ -1,0 +1,95 @@
+
+#header {
+  text-align: center;
+}
+
+#header h1 {
+  color: blue; 
+}
+
+#header h2 {
+  color: green;
+}
+
+#header img {
+  width: 250px; 
+  height: auto; 
+  margin: 0 auto; 
+}
+
+h1 + p {
+  font-weight: bold;
+}
+
+#info {
+  background-color: #f0f0f0; 
+  padding: 20px; 
+}
+
+#menu {
+  background-color: #ccc;
+  padding: 20px;
+}
+
+#info, #menu, #footer {
+    border-radius: 20px;
+}
+
+#links{
+	text-align: center;
+}
+
+#table {
+  margin-top: 20px;
+}
+
+#table td {
+  padding: 5px;
+}
+
+#list ol{
+  margin-left: 20px;
+}
+
+
+#table {
+  margin-top: 20px; 
+  overflow: auto; 
+  max-height:300px;
+}
+
+#table img {
+  max-width: 100px; 
+  height: auto; 
+}
+
+#list ol {
+  list-style-type: upper-roman;
+}
+
+#list ol ol {
+  list-style-type: decimal;
+}
+
+a {
+  color: blue; 
+  text-decoration: none; 
+}
+
+a:visited {
+  color: purple; 
+}
+
+a:hover {
+  color: rgb(255,0,0); 
+}
+.gradient {
+  background-image: linear-gradient(to bottom, #ffcc00, #ff6600);
+}
+.transform-image img:hover {
+  transform: scale(1.5); 
+}
+
+
+
+
