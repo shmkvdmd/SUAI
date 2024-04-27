@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новая игрушка</title>
+</head>
+<body>
+	<nav>
+		<a href="index.html">Главная страница</a> |
+		<a href="sources.html">Использованные источники</a>
+	</nav>
+    <h1>Добавить информацию об игрушке</h1>
+    <form action="/cgi-bin/process_form.py" method="get">
+        <label for="model">Модель:</label>
+        <input type="text" id="model" name="model" required><br>
+
+        <label for="creator">Производитель:</label>
+        <input type="text" id="creator" name="creator" required><br>
+
+        <label for="color">Цвет:</label>
+        <input type="text" id="color" name="color" required><br>
+
+        <label for="choices">Тип робота:</label>
+        <select id="choices" name="choices">
+            <option value="Робот-трансформер">Робот-трансформер</option>
+            <option value="Робот-конструктор">Робот-конструктор</option>
+            <option value="Интерактивный робот">Интерактивный робот</option>
+        </select><br>
+
+        <label>Зарядка:</label><br>
+        <input type="checkbox" id="checkbox1" name="battery" value="Батарейки">
+        <label for="checkbox1">Батарейки</label><br>
+        <input type="checkbox" id="checkbox2" name="cable" value="Кабель">
+        <label for="checkbox2">Кабель</label><br>
+
+        <label>Минимальный возраст ребенка:</label><br>
+        <input type="radio" id="radio1" name="age" value="Более 6 лет">
+        <label for="radio1">Более 6 лет</label><br>
+        <input type="radio" id="radio2" name="age" value="Более 12 лет">
+        <label for="radio2">Более 12 лет</label><br>
+
+        <input type="submit" value="Отправить">
+        <input type="reset" value="Очистить форму">
+    </form>
+</body>
+</html>
