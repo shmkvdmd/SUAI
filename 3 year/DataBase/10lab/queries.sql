@@ -52,12 +52,22 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION final_bug_avg(total INTERVAL, qty NUMERIC)
+    RETURNS FLOAT AS $$
+BEGIN
+    IF qty > 0 THEN
+        RETURN total / qty
+    ELSE
+        RETURN NULL;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE AGGREGATE bug_avg(date_task) (
     SFUNC = fix_duration,
     STYPE = average_state,
-	FINALFUNC = 
+	FINALFUNC = final_bug_avg,
     INITCOND = (0,0)
 );
 
-SELECT bug_max_fix(bug_data) FROM bugs;
+SELECT bug_avg(bug_data) FROM bugs;
