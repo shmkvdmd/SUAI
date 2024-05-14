@@ -1,6 +1,6 @@
-SELECT * FROM worker WHERE first_name LIKE 'А%' -- Сотрудники, у которых имя начинается с А
+SELECT * FROM worker WHERE first_name LIKE 'А%'
 
-SELECT * FROM developer WHERE surname LIKE 'М%' -- Разработчики, у которых фамилия начинается на М
+SELECT * FROM developer WHERE surname LIKE 'М%'
 
 
 CREATE FUNCTION case_text_equal(text, text) RETURNS boolean AS $$
