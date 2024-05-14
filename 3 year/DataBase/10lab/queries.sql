@@ -11,12 +11,11 @@ CREATE OPERATOR ==* (
     PROCEDURE = case_text_equal,
     LEFTARG = text,
     RIGHTARG = text,
-    COMMUTATOR = '==*',
-    NEGATOR = '!=*'
+    COMMUTATOR = '==*'
 );
 
 
-CREATE FUNCTION count_bugs(state bigint, bug_crit bug_crit) RETURNS bigint
+CREATE FUNCTION count_bugs(state bigint, bug_crit bug_crit) RETURNS int
 AS $$
 BEGIN
     IF bug_crit IS NOT NULL THEN
@@ -29,9 +28,36 @@ $$ LANGUAGE plpgsql;
 
 CREATE AGGREGATE bug_count(bug_crit) (
     SFUNC = count_bugs,
-    STYPE = bigint,
+    STYPE = int,
     INITCOND = '0'
 );
 
 SELECT crit_level AS "Критичность", bug_count(crit_level) AS "Количество багов" FROM bugs
 GROUP BY crit_level;
+
+
+
+CREATE TYPE average_state AS (accum INTERVAL, qty numeric);
+
+
+CREATE OR REPLACE FUNCTION fix_avg_time(stat average_state, ac1 date_task)
+    RETURNS average_state LANGUAGE plpgsql
+AS $$
+BEGIN 
+    IF (ac1.started IS NULL) OR (ac1.ended IS NULL) THEN
+        RETURN stat;
+    ELSE
+        RETURN ROW(stat.accum + (ac1.ended - ac1.started), stat.qty+1)::average_state;
+    END IF;
+END;
+$$;
+
+
+CREATE AGGREGATE bug_avg(date_task) (
+    SFUNC = fix_duration,
+    STYPE = average_state,
+	FINALFUNC = 
+    INITCOND = (0,0)
+);
+
+SELECT bug_max_fix(bug_data) FROM bugs;
