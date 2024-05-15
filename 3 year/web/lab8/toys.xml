@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toys>
+    <toy>
+        <name>Робот 1</name>
+        <description>Робот с функцией ходьбы.</description>
+        <price>2500</price>
+        <image>robot1.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 2</name>
+        <description>Механический робот с функцией ходьбы и подсветкой глаз.</description>
+        <price>1800</price>
+        <image>robot2.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 3</name>
+        <description>Механический робот с функцией ходьбы и подсветкой глаз.</description>
+        <price>3000</price>
+        <image>robot3.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 4</name>
+        <description>Интерактивный робот.</description>
+        <price>2400</price>
+        <image>robot4.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 5</name>
+        <description>Робот с функцией ходьбы и звуковым сопровождением.</description>
+        <price>2200</price>
+        <image>robot5.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 6</name>
+        <description>Робот с подсветкой.</description>
+        <price>1500</price>
+        <image>robot6.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 7</name>
+        <description>Робот, который умеет ехать по маршруту.</description>
+        <price>1700</price>
+        <image>robot7.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 8</name>
+        <description>Робот на пульте управления.</description>
+        <price>2100</price>
+        <image>robot8.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 9</name>
+        <description>Робот на пульте управления.</description>
+        <price>1790</price>
+        <image>robot9.jpg</image>
+    </toy>
+    <toy>
+        <name>Робот 10</name>
+        <description>Робот с функцией ходьбы и звуковым сопровождением.</description>
+        <price>3200</price>
+        <image>robot10.jpg</image>
+    </toy>
+</toys>

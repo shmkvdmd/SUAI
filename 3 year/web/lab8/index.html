@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function loadXMLDoc(filename) {
+            if (window.ActiveXObject) {
+                xhttp = new ActiveXObject("Msxml2.XMLHTTP");
+            } else {
+                xhttp = new XMLHttpRequest();
+            }
+            xhttp.open("GET", filename, false);
+            try {
+                xhttp.responseType = "msxml-document"
+            } catch (err) {
+            } // Helping IE11
+            xhttp.send("");
+            return xhttp.responseXML;
+        }
+
+        function displayResult() {
+            xml = loadXMLDoc("toys.xml");
+            xsl = loadXMLDoc("toys.xsl");
+            xlsLine = loadXMLDoc("toysline.xsl");
+// код для IE
+            if (window.ActiveXObject || xhttp.responseType == "msxml-document") {
+                ex = xml.transformNode(xsl);
+                document.getElementById("example").innerHTML = ex;
+            }
+// код для Chrome, Firefox, Opera и др.
+            else if (document.implementation && document.implementation.createDocument) {
+                xsltProcessor = new XSLTProcessor();
+                xsltProcessor.importStylesheet(xsl);
+                resultDocument = xsltProcessor.transformToFragment(xml, document);
+                document.getElementById("example").appendChild(resultDocument);
+                xsltProcessor.importStylesheet(xlsLine);
+                resultDocument = xsltProcessor.transformToFragment(xml, document);
+                document.getElementById("lineExample").appendChild(resultDocument);
+            }
+        }
+    </script>
+    <style>
+        tbody img {
+            width: 50px;
+            height: auto;
+            filter: grayscale(0%);
+        }
+    </style>
+</head>
+<body onload="displayResult()">
+<div class="cont" style="width:800px">
+    <main>
+        <div id="lineExample"/>
+        <div id="example"/>
+
+    </main>
+    <hr>
+</div>
+</body>
+</html>
