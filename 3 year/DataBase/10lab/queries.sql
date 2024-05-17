@@ -50,24 +50,20 @@ BEGIN
         RETURN ROW(stat.accum + (ac1.ended - ac1.started), stat.qty+1)::average_state;
     END IF;
 END;
-$$;
+$$ IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION final_bug_avg(total INTERVAL, qty NUMERIC)
-    RETURNS FLOAT AS $$
+CREATE OR REPLACE FUNCTION average_time_final(state average_state)
+    RETURNS interval AS $$
 BEGIN
-    IF qty > 0 THEN
-        RETURN total / qty
-    ELSE
-        RETURN NULL;
-    END IF;
+    RETURN CASE WHEN state.qty > 0 THEN state.accum/state.qty
 END;
-$$ LANGUAGE plpgsql;
+END; $$ LANGUAGE plpgsql;
 
 CREATE AGGREGATE bug_avg(date_task) (
-    SFUNC = fix_duration,
+    SFUNC = fix_avg_time,
     STYPE = average_state,
-	FINALFUNC = final_bug_avg,
-    INITCOND = (0,0)
+	FINALFUNC = average_time_final,
+    INITCOND = '(0,0)'
 );
 
 SELECT bug_avg(bug_data) FROM bugs;
