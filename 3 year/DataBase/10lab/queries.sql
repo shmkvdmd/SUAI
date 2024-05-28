@@ -67,3 +67,4 @@ CREATE AGGREGATE bug_avg(date_task) (
 );
 
 SELECT bug_avg(bug_data) FROM bugs;
+
