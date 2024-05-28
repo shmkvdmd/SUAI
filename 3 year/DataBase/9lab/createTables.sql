@@ -7,8 +7,8 @@ CREATE TABLE worker (
 
 CREATE TYPE date_task AS (
 	is_fixed BOOL,
-	started DATE,
-	ended DATE
+	started TIMESTAMP,
+	ended TIMESTAMP
 );
 
 CREATE TABLE tester (
